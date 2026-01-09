@@ -1,10 +1,10 @@
 spring:
   application:
-    name: smartspec-backend
+    name: planai-backend
 
   # Database Configuration
   datasource:
-    url: jdbc:postgresql://localhost:5432/smartspec_db
+    url: jdbc:postgresql://localhost:5432/planai_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -64,7 +64,7 @@ springdoc:
 logging:
   level:
     root: INFO
-    com.smartspec: DEBUG
+    com.planai: DEBUG
     com.google.genai: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

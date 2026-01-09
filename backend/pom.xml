@@ -11,11 +11,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.smartspec</groupId>
-    <artifactId>smartspec-backend</artifactId>
+    <groupId>com.planai</groupId>
+    <artifactId>planai-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>smartspec-backend</name>
-    <description>SmartSpec - AI-powered specification generator</description>
+    <name>planai-backend</name>
+    <description>PlanAi - AI-powered specification generator</description>
 
     <properties>
         <java.version>21</java.version>

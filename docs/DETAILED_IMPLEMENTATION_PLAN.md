@@ -1,6 +1,6 @@
-# SmartSpec: The Definitive Implementation Playbook
+# PlanAi: The Definitive Implementation Playbook
 
-This is not just a guide; it is the **exact specification** for building SmartSpec to industry-leading standards. Every instruction here is designed to produce code that is maintainable, scalable, and secure.
+This is not just a guide; it is the **exact specification** for building PlanAi to industry-leading standards. Every instruction here is designed to produce code that is maintainable, scalable, and secure.
 
 ---
 
@@ -24,7 +24,7 @@ This is not just a guide; it is the **exact specification** for building SmartSp
 **File**: `backend/src/main/java/com/smartspec/backend/model/Project.java`
 
 ```java
-package com.smartspec.backend.model;
+package com.planai.backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;

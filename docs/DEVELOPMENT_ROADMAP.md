@@ -1,6 +1,6 @@
-# SmartSpec Development Roadmap
+# PlanAi Development Roadmap
 
-This guide provides a step-by-step instructions to build **SmartSpec**, an AI-powered software requirements generator using Spring Boot (Java), Angular, PostgreSQL, and Google Gemini via Spring AI.
+This guide provides a step-by-step instructions to build **PlanAi**, an AI-powered software requirements generator using Spring Boot (Java), Angular, PostgreSQL, and Google Gemini via Spring AI.
 
 ## 🏁 Prerequisites
 - Docker & Docker Compose installed.
@@ -24,7 +24,7 @@ This guide provides a step-by-step instructions to build **SmartSpec**, an AI-po
 
 ### Task 1.1: Database Configuration & Entities
 **File:** `backend/src/main/resources/application.properties`
-1.  Ensure datasource URL points to `jdbc:postgresql://db:5432/smartspec_db`.
+1.  Ensure datasource URL points to `jdbc:postgresql://db:5432/planai_db`.
 2.  Set `spring.jpa.hibernate.ddl-auto=update` for MVP schema management.
 
 **File:** `backend/src/main/java/com/smartspec/backend/model/Project.java`

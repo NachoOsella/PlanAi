@@ -1,7 +1,7 @@
 # Docker profile configuration
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://db:5432/smartspec_db}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://db:5432/planai_db}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
 
@@ -17,6 +17,6 @@ spring:
 logging:
   level:
     root: INFO
-    com.smartspec: INFO
+    com.planai: INFO
   pattern:
     console: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"

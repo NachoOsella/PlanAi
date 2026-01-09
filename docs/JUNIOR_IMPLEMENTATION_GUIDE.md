@@ -82,19 +82,19 @@ PROJECT (e.g., "E-Commerce Platform")
 
 Before starting, verify you have:
 
-- [ ] Docker 20.x or higher (`docker --version`)
-- [ ] Docker Compose 2.x or higher (`docker-compose --version`)
-- [ ] Java 21 (`java --version`)
-- [ ] Node 20.x (`node --version`)
-- [ ] npm 10.x (`npm --version`)
-- [ ] Git 2.x (`git --version`)
-- [ ] Google AI Studio API Key from https://aistudio.google.com/apikey
+- [x] Docker 20.x or higher (`docker --version`)
+- [x] Docker Compose 2.x or higher (`docker-compose --version`)
+- [x] Java 21 (`java --version`)
+- [x] Node 20.x (`node --version`)
+- [x] npm 10.x (`npm --version`)
+- [x] Git 2.x (`git --version`)
+- [x] Google AI Studio API Key from https://aistudio.google.com/apikey
 
 ### 2.2 Setup Commands
 
 ```bash
 # 1. Navigate to project
-cd ~/Documents/practica/SmartSpec
+cd ~/Documents/practica/PlanAi
 
 # 2. Create .env file with your API key
 echo "GOOGLE_API_KEY=your-actual-api-key" > .env
@@ -165,12 +165,12 @@ cd frontend && npm install && npm start
 | Message | `model/Message.java` | id, conversation (ManyToOne), role, content |
 
 **Entity Best Practices to Follow:**
-- [ ] Use `@Getter`, `@Setter` instead of `@Data`
-- [ ] Use `@EqualsAndHashCode(onlyExplicitlyIncluded = true)` with only `@Id` field
-- [ ] Use `@ToString(exclude = {...})` to prevent infinite loops
-- [ ] Use `FetchType.LAZY` for all `@OneToMany` relationships
-- [ ] Use `@Builder.Default` for collection initializations
-- [ ] Add helper methods like `addEpic()`, `removeEpic()` for bidirectional relationships
+- [x] Use `@Getter`, `@Setter` instead of `@Data`
+- [x] Use `@EqualsAndHashCode(onlyExplicitlyIncluded = true)` with only `@Id` field
+- [x] Use `@ToString(exclude = {...})` to prevent infinite loops
+- [x] Use `FetchType.LAZY` for all `@OneToMany` relationships
+- [x] Use `@Builder.Default` for collection initializations
+- [x] Add helper methods like `addEpic()`, `removeEpic()` for bidirectional relationships
 
 ---
 
