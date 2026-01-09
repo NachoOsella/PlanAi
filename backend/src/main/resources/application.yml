@@ -2,6 +2,10 @@ spring:
   application:
     name: planai-backend
 
+  # Jackson Configuration
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
   # Database Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/planai_db
