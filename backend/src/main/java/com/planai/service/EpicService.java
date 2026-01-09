@@ -1,4 +1,4 @@
-package com.planai.service.interfaces;
+package com.planai.service;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import com.planai.model.dto.response.EpicResponse;
 /**
  * Interface for Epic Service defining epic-related operations.
  */
-public interface IEpicService {
+public interface EpicService {
 
     /**
      * Retrieves all epics associated with a specific project.

@@ -1,4 +1,4 @@
-package com.planai.service.interfaces;
+package com.planai.service;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.planai.model.dto.response.ProjectResponse;
 /**
  * Interface for Project Service defining project-related operations.
  */
-public interface IProjectService {
+public interface ProjectService {
 
     /**
      * Retrieves a list of all projects.

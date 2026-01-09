@@ -1,4 +1,4 @@
-package com.planai.service.interfaces;
+package com.planai.service;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import com.planai.model.dto.response.UserStoryResponse;
 /**
  * Interface for User Story Service defining story-related operations.
  */
-public interface IUserStoryService {
+public interface UserStoryService {
 
     /**
      * Retrieves all user stories associated with a specific epic.

@@ -1,4 +1,4 @@
-package com.planai.service.interfaces;
+package com.planai.service;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import com.planai.model.dto.response.TaskResponse;
 /**
  * Interface for Task Service defining task-related operations.
  */
-public interface ITaskService {
+public interface TaskService {
 
     /**
      * Retrieves all tasks associated with a specific user story.
