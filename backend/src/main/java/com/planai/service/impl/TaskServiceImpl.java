@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.planai.model.dto.request.CreateTaskRequest;
 import com.planai.model.dto.response.TaskResponse;
+import com.planai.repository.TaskRepository;
+import com.planai.repository.UserStoryRepository;
 import com.planai.service.TaskService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Transactional(readOnly = true)
 public class TaskServiceImpl implements TaskService {
+
+    private final TaskRepository taskRepository;
+    private final UserStoryRepository userStoryRepository;
 
     @Override
     public List<TaskResponse> getStoryTasks(Long storyId) {
@@ -41,12 +46,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public void deleteTask(Long taskId) {
-        // Implementation
     }
 
     @Override
     @Transactional
     public void reorderTasks(Long storyId, List<Long> taskIds) {
-        // Implementation
     }
 }

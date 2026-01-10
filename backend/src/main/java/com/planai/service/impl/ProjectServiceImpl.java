@@ -9,6 +9,7 @@ import com.planai.model.dto.request.CreateProjectRequest;
 import com.planai.model.dto.request.UpdateProjectRequest;
 import com.planai.model.dto.response.ProjectDetailResponse;
 import com.planai.model.dto.response.ProjectResponse;
+import com.planai.repository.ProjectRepository;
 import com.planai.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
+
+    private final ProjectRepository projectRepository;
 
     @Override
     public List<ProjectResponse> getAllProjects() {
@@ -48,6 +51,5 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProject(Long projectId) {
-        // Implementation
     }
 }

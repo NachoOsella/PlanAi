@@ -23,6 +23,10 @@ public class EpicMapper {
         return modelMapper.map(request, EpicEntity.class);
     }
 
+    public void updateEntityFromRequest(CreateEpicRequest request, EpicEntity entity) {
+        modelMapper.map(request, entity);
+    }
+
     public EpicResponse toResponse(EpicEntity entity) {
         EpicResponse response = modelMapper.map(entity, EpicResponse.class);
         
