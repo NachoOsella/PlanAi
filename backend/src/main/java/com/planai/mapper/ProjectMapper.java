@@ -30,9 +30,35 @@ public class ProjectMapper {
     }
 
     public ProjectResponse toResponse(ProjectEntity entity) {
-        // ProjectResponse usually contains counts which might need manual setting if not in entity
-        // Assuming for now simple mapping, service layer might populate counts if they are calculated
-        return modelMapper.map(entity, ProjectResponse.class);
+        ProjectResponse response = modelMapper.map(entity, ProjectResponse.class);
+
+        long epicsCount = 0L;
+        long storiesCount = 0L;
+        long tasksCount = 0L;
+        if (entity.getEpics() != null) {
+            epicsCount = entity.getEpics().size();
+            storiesCount = entity.getEpics().stream()
+                    .mapToLong(epic -> epic.getStories() == null ? 0L : epic.getStories().size())
+                    .sum();
+            tasksCount = entity.getEpics().stream()
+                    .mapToLong(epic -> {
+                        if (epic.getStories() == null) {
+                            return 0L;
+                        }
+                        return epic.getStories().stream()
+                                .mapToLong(story -> story.getTasks() == null ? 0L : story.getTasks().size())
+                                .sum();
+                    })
+                    .sum();
+        }
+
+        long conversationsCount = entity.getConversations() == null ? 0L : entity.getConversations().size();
+
+        response.setEpicsCount(epicsCount);
+        response.setStoriesCount(storiesCount);
+        response.setTasksCount(tasksCount);
+        response.setConversationsCount(conversationsCount);
+        return response;
     }
 
     public ProjectDetailResponse toDetailResponse(ProjectEntity entity) {

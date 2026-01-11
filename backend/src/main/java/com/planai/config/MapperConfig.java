@@ -12,7 +12,10 @@ public class MapperConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         // Set matching strategy to STRICT to avoid ambiguous mapping
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        // Skip null values to support partial updates
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setSkipNullEnabled(true);
         return modelMapper;
     }
 }

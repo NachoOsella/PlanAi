@@ -50,6 +50,5 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public void deleteProject(Long projectId) {
-    }
+    public void deleteProject(Long projectId) {}
 }
