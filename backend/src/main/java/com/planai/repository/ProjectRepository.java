@@ -27,6 +27,6 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
      * @return An Optional containing the ProjectEntity with its epics if found, otherwise empty.
      */
     @EntityGraph(attributePaths = "epics")
-    Optional<ProjectEntity> findByIdWithEpics(Long id);
+    Optional<ProjectEntity> findById(Long id);
 
 }

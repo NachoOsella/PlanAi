@@ -27,5 +27,5 @@ public interface ConversationRepository extends JpaRepository<ConversationEntity
      * @return An Optional containing the ConversationEntity with messages if found, otherwise empty.
      */
     @EntityGraph(attributePaths = "messages")
-    Optional<ConversationEntity> findByIdWithMessages(Long id);
+    Optional<ConversationEntity> findById(Long id);
 }
