@@ -19,6 +19,10 @@ public class TaskMapper {
         return modelMapper.map(request, TaskEntity.class);
     }
 
+    public void updateEntityFromRequest(CreateTaskRequest request, TaskEntity entity) {
+        modelMapper.map(request, entity);
+    }
+
     public TaskResponse toResponse(TaskEntity entity) {
         return modelMapper.map(entity, TaskResponse.class);
     }

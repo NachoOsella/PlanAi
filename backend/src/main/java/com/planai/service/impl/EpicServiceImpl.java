@@ -36,14 +36,14 @@ public class EpicServiceImpl implements EpicService {
         this.epicMapper = epicMapper;
     }
 
-    @Override
     /**
      * Retrieves all epics for a specific project, ordered by their order index.
      *
      * @param projectId the ID of the project
-     * @return a list of epic responses
+     * @return a list of {@link EpicResponse} representing the epics
      * @throws IllegalArgumentException if the project does not exist
      */
+    @Override
     public List<EpicResponse> getProjectEpics(Long projectId) {
         if (!projectRepository.existsById(projectId)) {
             throw new IllegalArgumentException("Project with ID " + projectId + " does not exist.");
@@ -52,16 +52,16 @@ public class EpicServiceImpl implements EpicService {
         return epicsEntities.stream().map(epicMapper::toResponse).toList();
     }
 
-    @Override
-    @Transactional
     /**
      * Creates a new epic for a specific project.
      *
      * @param projectId the ID of the project
-     * @param request the request containing epic details
-     * @return the created epic response
+     * @param request the {@link CreateEpicRequest} containing epic details
+     * @return the created {@link EpicResponse}
      * @throws IllegalArgumentException if the project does not exist
      */
+    @Override
+    @Transactional
     public EpicResponse createEpic(Long projectId, CreateEpicRequest request) {
         ProjectEntity project = projectRepository
                 .findById(projectId)
@@ -73,16 +73,16 @@ public class EpicServiceImpl implements EpicService {
         return epicMapper.toResponse(epicEntity);
     }
 
-    @Override
-    @Transactional
     /**
      * Updates an existing epic.
      *
      * @param epicId the ID of the epic to update
-     * @param request the request containing updated details
-     * @return the updated epic response
+     * @param request the {@link CreateEpicRequest} containing updated details
+     * @return the updated {@link EpicResponse}
      * @throws IllegalArgumentException if the epic does not exist
      */
+    @Override
+    @Transactional
     public EpicResponse updateEpic(Long epicId, CreateEpicRequest request) {
         EpicEntity epicEntity = epicRepository
                 .findById(epicId)
@@ -94,14 +94,14 @@ public class EpicServiceImpl implements EpicService {
         return epicMapper.toResponse(epicEntity);
     }
 
-    @Override
-    @Transactional
     /**
      * Deletes an epic by its ID.
      *
      * @param epicId the ID of the epic to delete
      * @throws IllegalArgumentException if the epic does not exist
      */
+    @Override
+    @Transactional
     public void deleteEpic(Long epicId) {
         if (!epicRepository.existsById(epicId)) {
             throw new IllegalArgumentException("Epic with ID " + epicId + " does not exist.");
@@ -109,31 +109,47 @@ public class EpicServiceImpl implements EpicService {
         epicRepository.deleteById(epicId);
     }
 
-    @Override
-    @Transactional
     /**
      * Reorders epics within a project based on a provided list of epic IDs. The order index of each epic is updated to
      * match its position in the list.
      *
      * @param projectId the ID of the project
      * @param epicIds the list of epic IDs in the desired order
-     * @throws IllegalArgumentException if the project does not exist
+     * @throws IllegalArgumentException if the project does not exist, if the number of IDs doesn't match, if there are
+     *             duplicate IDs, or if an ID doesn't belong to the project
      */
+    @Override
+    @Transactional
     public void reorderEpics(Long projectId, List<Long> epicIds) {
         if (!projectRepository.existsById(projectId)) {
             throw new IllegalArgumentException("Project with ID " + projectId + " does not exist.");
         }
 
         List<EpicEntity> epics = epicRepository.findByProjectIdOrderByOrderIndexAsc(projectId);
+
+        if (epicIds.size() != epics.size()) {
+            throw new IllegalArgumentException(
+                    "Expected " + epics.size() + " epic IDs, but received " + epicIds.size());
+        }
+
+        if (epicIds.size() != epicIds.stream().distinct().count()) {
+            throw new IllegalArgumentException("Duplicate epic IDs are not allowed.");
+        }
+
+        // Create map for O(1) lookup
         Map<Long, EpicEntity> epicMap = epics.stream().collect(Collectors.toMap(EpicEntity::getId, epic -> epic));
 
+        // Validate all IDs belong to the project and update order
         for (int i = 0; i < epicIds.size(); i++) {
             Long epicId = epicIds.get(i);
             EpicEntity epic = epicMap.get(epicId);
-            if (epic != null) {
-                epic.setOrderIndex(i);
+            if (epic == null) {
+                throw new IllegalArgumentException(
+                        "Epic with ID " + epicId + " does not belong to project " + projectId);
             }
+            epic.setOrderIndex(i);
         }
+
         epicRepository.saveAll(epics);
     }
 }
