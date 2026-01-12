@@ -27,6 +27,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * JPA entity representing an epic within a project.
+ * Maps to the 'epics' table in the database.
+ */
 @Getter
 @Setter
 @Builder

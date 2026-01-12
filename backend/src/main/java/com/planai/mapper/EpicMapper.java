@@ -12,6 +12,9 @@ import com.planai.model.entity.EpicEntity;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Mapper component for converting between EpicEntity and DTOs.
+ */
 @Component
 @RequiredArgsConstructor
 public class EpicMapper {

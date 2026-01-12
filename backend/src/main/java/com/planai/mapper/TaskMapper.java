@@ -9,6 +9,9 @@ import com.planai.model.entity.TaskEntity;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Mapper component for converting between TaskEntity and DTOs.
+ */
 @Component
 @RequiredArgsConstructor
 public class TaskMapper {

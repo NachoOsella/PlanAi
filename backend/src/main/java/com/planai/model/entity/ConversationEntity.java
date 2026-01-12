@@ -25,6 +25,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * JPA entity representing a conversation with the AI for a project.
+ * Maps to the 'conversations' table in the database.
+ */
 @Getter
 @Setter
 @Builder

@@ -12,6 +12,9 @@ import com.planai.model.entity.UserStoryEntity;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Mapper component for converting between UserStoryEntity and DTOs.
+ */
 @Component
 @RequiredArgsConstructor
 public class UserStoryMapper {

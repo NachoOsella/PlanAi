@@ -13,6 +13,9 @@ import com.planai.model.entity.MessageEntity;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Mapper component for converting between ConversationEntity and DTOs.
+ */
 @Component
 @RequiredArgsConstructor
 public class ConversationMapper {

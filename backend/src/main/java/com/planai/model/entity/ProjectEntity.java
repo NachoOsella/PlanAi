@@ -23,6 +23,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * JPA entity representing a project in the system.
+ * Maps to the 'projects' table in the database.
+ */
 @Getter
 @Setter
 @Builder

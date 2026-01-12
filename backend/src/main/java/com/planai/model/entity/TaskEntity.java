@@ -21,6 +21,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * JPA entity representing a task within a user story.
+ * Maps to the 'tasks' table in the database.
+ */
 @Getter
 @Setter
 @Builder

@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.planai.model.entity.TaskEntity;
 
+/**
+ * Repository interface for TaskEntity operations.
+ */
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     /**
      * Find all TaskEntity records by user story ID, ordered by the 'order' field in ascending order.
-     * 
+     *
      * @param userStoryId The ID of the user story.
      * @return List of TaskEntity objects sorted by order ascending.
      */

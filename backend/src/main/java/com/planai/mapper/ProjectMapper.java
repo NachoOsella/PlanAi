@@ -14,6 +14,9 @@ import com.planai.model.entity.ProjectEntity;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Mapper component for converting between ProjectEntity and DTOs.
+ */
 @Component
 @RequiredArgsConstructor
 public class ProjectMapper {

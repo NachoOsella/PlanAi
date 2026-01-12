@@ -3,6 +3,9 @@ package com.planai.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Base exception class for API-related errors.
+ */
 @Getter
 public class ApiException extends RuntimeException {
 

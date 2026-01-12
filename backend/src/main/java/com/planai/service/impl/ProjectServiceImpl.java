@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementation of {@link ProjectService}.
+ * Handles project-related business logic.
  */
 @Service
 @Slf4j
@@ -32,12 +33,24 @@ public class ProjectServiceImpl implements ProjectService {
         this.projectMapper = projectMapper;
     }
 
+    /**
+     * Retrieves all projects from the database.
+     *
+     * @return List of ProjectResponse objects containing project summaries.
+     */
     @Override
     public List<ProjectResponse> getAllProjects() {
         List<ProjectEntity> projectEntities = projectRepository.findAll();
         return projectEntities.stream().map(projectMapper::toResponse).toList();
     }
 
+    /**
+     * Retrieves detailed information about a specific project including its epics.
+     *
+     * @param projectId The ID of the project to retrieve.
+     * @return ProjectDetailResponse containing full project details with nested epics.
+     * @throws IllegalArgumentException if the project does not exist.
+     */
     @Override
     public ProjectDetailResponse getProjectDetail(Long projectId) {
         ProjectEntity projectEntity = projectRepository
@@ -46,6 +59,12 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.toDetailResponse(projectEntity);
     }
 
+    /**
+     * Creates a new project in the database.
+     *
+     * @param request The CreateProjectRequest containing project creation details.
+     * @return ProjectResponse representing the created project.
+     */
     @Override
     @Transactional
     public ProjectResponse createProject(CreateProjectRequest request) {
@@ -54,6 +73,14 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.toResponse(savedEntity);
     }
 
+    /**
+     * Updates an existing project's details.
+     *
+     * @param projectId The ID of the project to update.
+     * @param request The UpdateProjectRequest containing updated project details.
+     * @return ProjectResponse representing the updated project.
+     * @throws IllegalArgumentException if the project does not exist.
+     */
     @Override
     @Transactional
     public ProjectResponse updateProject(Long projectId, UpdateProjectRequest request) {
@@ -65,6 +92,12 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.toResponse(updatedEntity);
     }
 
+    /**
+     * Deletes a project by its ID.
+     *
+     * @param projectId The ID of the project to delete.
+     * @throws IllegalArgumentException if the project does not exist.
+     */
     @Override
     @Transactional
     public void deleteProject(Long projectId) {

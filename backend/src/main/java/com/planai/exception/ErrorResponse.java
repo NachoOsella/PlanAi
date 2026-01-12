@@ -6,6 +6,9 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * DTO representing an error response returned by the API.
+ */
 @Getter
 @Builder
 public class ErrorResponse {

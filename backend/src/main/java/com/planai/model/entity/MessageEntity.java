@@ -25,6 +25,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * JPA entity representing a message within a conversation.
+ * Maps to the 'messages' table in the database.
+ */
 @Getter
 @Setter
 @Builder
