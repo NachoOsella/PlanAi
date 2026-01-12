@@ -16,6 +16,7 @@ import com.planai.model.enums.StatusEnum;
 import com.planai.repository.TaskRepository;
 import com.planai.repository.UserStoryRepository;
 import com.planai.service.TaskService;
+import com.planai.exception.ResourceNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,12 +44,12 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param storyId the ID of the user story
      * @return a list of {@link TaskResponse} representing the tasks
-     * @throws IllegalArgumentException if the user story does not exist
+     * @throws ResourceNotFoundException if the user story does not exist
      */
     @Override
     public List<TaskResponse> getStoryTasks(Long storyId) {
-        if (!userStoryRepository.findById(storyId).isPresent()) {
-            throw new IllegalArgumentException("User story with id " + storyId + " does not exist.");
+        if (!userStoryRepository.existsById(storyId)) {
+            throw new ResourceNotFoundException("UserStory", storyId);
         }
         List<TaskEntity> tasks = taskRepository.findByUserStoryIdOrderByOrderIndexAsc(storyId);
         return tasks.stream().map(taskMapper::toResponse).toList();
@@ -60,14 +61,14 @@ public class TaskServiceImpl implements TaskService {
      * @param storyId the ID of the user story
      * @param request the {@link CreateTaskRequest} containing task details
      * @return the created {@link TaskResponse}
-     * @throws IllegalArgumentException if the user story does not exist
+     * @throws ResourceNotFoundException if the user story does not exist
      */
     @Override
     @Transactional
     public TaskResponse createTask(Long storyId, CreateTaskRequest request) {
         UserStoryEntity userStory = userStoryRepository
                 .findById(storyId)
-                .orElseThrow(() -> new IllegalArgumentException("User story with id " + storyId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("UserStory", storyId));
         TaskEntity taskEntity = taskMapper.toEntity(request);
         taskEntity.setUserStory(userStory);
         if (taskEntity.getStatus() == null) {
@@ -83,14 +84,14 @@ public class TaskServiceImpl implements TaskService {
      * @param taskId the ID of the task to update
      * @param request the {@link CreateTaskRequest} containing updated task details
      * @return the updated {@link TaskResponse}
-     * @throws IllegalArgumentException if the task does not exist
+     * @throws ResourceNotFoundException if the task does not exist
      */
     @Override
     @Transactional
     public TaskResponse updateTask(Long taskId, CreateTaskRequest request) {
         TaskEntity taskEntity = taskRepository
                 .findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task with id " + taskId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Task", taskId));
         taskMapper.updateEntityFromRequest(request, taskEntity);
         taskEntity = taskRepository.save(taskEntity);
         return taskMapper.toResponse(taskEntity);
@@ -100,14 +101,14 @@ public class TaskServiceImpl implements TaskService {
      * Deletes a task by its ID.
      *
      * @param taskId the ID of the task to delete
-     * @throws IllegalArgumentException if the task does not exist
+     * @throws ResourceNotFoundException if the task does not exist
      */
     @Override
     @Transactional
     public void deleteTask(Long taskId) {
         TaskEntity taskEntity = taskRepository
                 .findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task with id " + taskId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Task", taskId));
         taskRepository.delete(taskEntity);
     }
 
@@ -117,14 +118,15 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param storyId the ID of the user story
      * @param taskIds the list of task IDs in the desired order
-     * @throws IllegalArgumentException if the user story does not exist, if the number of IDs doesn't match, if there
+     * @throws ResourceNotFoundException if the user story does not exist
+     * @throws IllegalArgumentException if the number of IDs doesn't match, if there
      *             are duplicate IDs, or if an ID doesn't belong to the user story
      */
     @Override
     @Transactional
     public void reorderTasks(Long storyId, List<Long> taskIds) {
         if (!userStoryRepository.existsById(storyId)) {
-            throw new IllegalArgumentException("User story with ID " + storyId + " does not exist.");
+            throw new ResourceNotFoundException("UserStory", storyId);
         }
 
         List<TaskEntity> tasks = taskRepository.findByUserStoryIdOrderByOrderIndexAsc(storyId);

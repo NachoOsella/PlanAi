@@ -15,6 +15,7 @@ import com.planai.model.entity.ProjectEntity;
 import com.planai.repository.EpicRepository;
 import com.planai.repository.ProjectRepository;
 import com.planai.service.EpicService;
+import com.planai.exception.ResourceNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,12 +42,12 @@ public class EpicServiceImpl implements EpicService {
      *
      * @param projectId the ID of the project
      * @return a list of {@link EpicResponse} representing the epics
-     * @throws IllegalArgumentException if the project does not exist
+     * @throws ResourceNotFoundException if the project does not exist
      */
     @Override
     public List<EpicResponse> getProjectEpics(Long projectId) {
         if (!projectRepository.existsById(projectId)) {
-            throw new IllegalArgumentException("Project with ID " + projectId + " does not exist.");
+            throw new ResourceNotFoundException("Project", projectId);
         }
         List<EpicEntity> epicsEntities = epicRepository.findByProjectIdOrderByOrderIndexAsc(projectId);
         return epicsEntities.stream().map(epicMapper::toResponse).toList();
@@ -58,14 +59,14 @@ public class EpicServiceImpl implements EpicService {
      * @param projectId the ID of the project
      * @param request the {@link CreateEpicRequest} containing epic details
      * @return the created {@link EpicResponse}
-     * @throws IllegalArgumentException if the project does not exist
+     * @throws ResourceNotFoundException if the project does not exist
      */
     @Override
     @Transactional
     public EpicResponse createEpic(Long projectId, CreateEpicRequest request) {
         ProjectEntity project = projectRepository
                 .findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project with ID " + projectId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
 
         EpicEntity epicEntity = epicMapper.toEntity(request);
         epicEntity.setProject(project);
@@ -79,14 +80,14 @@ public class EpicServiceImpl implements EpicService {
      * @param epicId the ID of the epic to update
      * @param request the {@link CreateEpicRequest} containing updated details
      * @return the updated {@link EpicResponse}
-     * @throws IllegalArgumentException if the epic does not exist
+     * @throws ResourceNotFoundException if the epic does not exist
      */
     @Override
     @Transactional
     public EpicResponse updateEpic(Long epicId, CreateEpicRequest request) {
         EpicEntity epicEntity = epicRepository
                 .findById(epicId)
-                .orElseThrow(() -> new IllegalArgumentException("Epic with ID " + epicId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Epic", epicId));
 
         epicMapper.updateEntityFromRequest(request, epicEntity);
 
@@ -98,13 +99,13 @@ public class EpicServiceImpl implements EpicService {
      * Deletes an epic by its ID.
      *
      * @param epicId the ID of the epic to delete
-     * @throws IllegalArgumentException if the epic does not exist
+     * @throws ResourceNotFoundException if the epic does not exist
      */
     @Override
     @Transactional
     public void deleteEpic(Long epicId) {
         if (!epicRepository.existsById(epicId)) {
-            throw new IllegalArgumentException("Epic with ID " + epicId + " does not exist.");
+            throw new ResourceNotFoundException("Epic", epicId);
         }
         epicRepository.deleteById(epicId);
     }
@@ -115,14 +116,15 @@ public class EpicServiceImpl implements EpicService {
      *
      * @param projectId the ID of the project
      * @param epicIds the list of epic IDs in the desired order
-     * @throws IllegalArgumentException if the project does not exist, if the number of IDs doesn't match, if there are
+     * @throws ResourceNotFoundException if the project does not exist
+     * @throws IllegalArgumentException if the number of IDs doesn't match, if there are
      *             duplicate IDs, or if an ID doesn't belong to the project
      */
     @Override
     @Transactional
     public void reorderEpics(Long projectId, List<Long> epicIds) {
         if (!projectRepository.existsById(projectId)) {
-            throw new IllegalArgumentException("Project with ID " + projectId + " does not exist.");
+            throw new ResourceNotFoundException("Project", projectId);
         }
 
         List<EpicEntity> epics = epicRepository.findByProjectIdOrderByOrderIndexAsc(projectId);

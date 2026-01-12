@@ -14,6 +14,8 @@ import com.planai.model.entity.ProjectEntity;
 import com.planai.repository.ProjectRepository;
 import com.planai.service.ProjectService;
 
+import com.planai.exception.ResourceNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     public List<ProjectResponse> getAllProjects() {
-        List<ProjectEntity> projectEntities = projectRepository.findAll();
+        List<ProjectEntity> projectEntities = projectRepository.findAllByOrderByCreatedAtDesc();
         return projectEntities.stream().map(projectMapper::toResponse).toList();
     }
 
@@ -49,13 +51,13 @@ public class ProjectServiceImpl implements ProjectService {
      *
      * @param projectId The ID of the project to retrieve.
      * @return ProjectDetailResponse containing full project details with nested epics.
-     * @throws IllegalArgumentException if the project does not exist.
+     * @throws ResourceNotFoundException if the project does not exist.
      */
     @Override
     public ProjectDetailResponse getProjectDetail(Long projectId) {
         ProjectEntity projectEntity = projectRepository
                 .findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project with ID " + projectId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
         return projectMapper.toDetailResponse(projectEntity);
     }
 
@@ -79,14 +81,14 @@ public class ProjectServiceImpl implements ProjectService {
      * @param projectId The ID of the project to update.
      * @param request The UpdateProjectRequest containing updated project details.
      * @return ProjectResponse representing the updated project.
-     * @throws IllegalArgumentException if the project does not exist.
+     * @throws ResourceNotFoundException if the project does not exist.
      */
     @Override
     @Transactional
     public ProjectResponse updateProject(Long projectId, UpdateProjectRequest request) {
         ProjectEntity projectEntity = projectRepository
                 .findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project with ID " + projectId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
         projectMapper.updateEntity(request, projectEntity);
         ProjectEntity updatedEntity = projectRepository.save(projectEntity);
         return projectMapper.toResponse(updatedEntity);
@@ -96,13 +98,13 @@ public class ProjectServiceImpl implements ProjectService {
      * Deletes a project by its ID.
      *
      * @param projectId The ID of the project to delete.
-     * @throws IllegalArgumentException if the project does not exist.
+     * @throws ResourceNotFoundException if the project does not exist.
      */
     @Override
     @Transactional
     public void deleteProject(Long projectId) {
         if (!projectRepository.existsById(projectId)) {
-            throw new IllegalArgumentException("Project with ID " + projectId + " does not exist.");
+            throw new ResourceNotFoundException("Project", projectId);
         }
         projectRepository.deleteById(projectId);
     }
