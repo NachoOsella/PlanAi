@@ -1,0 +1,90 @@
+meta {
+  name: Create a new story in an epic
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/v1/epics/:epicId/stories
+  body: json
+  auth: inherit
+}
+
+params:path {
+  epicId: 
+}
+
+body:json {
+  {
+    "title": "",
+    "asA": "",
+    "soThat": "",
+    "priority": "",
+    "iwant": ""
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8080
+}
+
+example {
+  name: 200 Response
+  description: OK
+  
+  request: {
+    url: {{baseUrl}}/api/v1/epics/:epicId/stories
+    method: POST
+    mode: json
+    params:path: {
+      epicId: 
+    }
+  
+    body:json: {
+      {
+        "title": "",
+        "asA": "",
+        "soThat": "",
+        "priority": "",
+        "iwant": ""
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: */*
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+        {
+          "id": 0,
+          "title": "",
+          "asA": "",
+          "soThat": "",
+          "priority": "",
+          "status": "",
+          "orderIndex": 0,
+          "tasks": [
+            {
+              "id": 0,
+              "title": "",
+              "description": "",
+              "status": "",
+              "estimatedHours": 0,
+              "orderIndex": 0
+            }
+          ],
+          "iwant": ""
+        }
+      '''
+    }
+  }
+}

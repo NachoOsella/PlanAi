@@ -1,0 +1,15 @@
+{
+  "version": "1",
+  "name": "PlanAi API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ],
+  "size": 0.00004863739013671875,
+  "filesCount": 1,
+  "presets": {
+    "requestType": "http",
+    "requestUrl": "http://localhost:8080"
+  }
+}

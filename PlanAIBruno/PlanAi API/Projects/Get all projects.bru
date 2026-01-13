@@ -1,0 +1,54 @@
+meta {
+  name: Get all projects
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/v1/projects
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8080
+}
+
+example {
+  name: 200 Response
+  description: OK
+  
+  request: {
+    url: {{baseUrl}}/api/v1/projects
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: */*
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+        [
+          {
+            "id": 0,
+            "name": "",
+            "description": "",
+            "epicsCount": 0,
+            "storiesCount": 0,
+            "tasksCount": 0,
+            "conversationsCount": 0
+          }
+        ]
+      '''
+    }
+  }
+}
