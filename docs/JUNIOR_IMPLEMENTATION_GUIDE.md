@@ -347,12 +347,12 @@ curl -X POST http://localhost:8080/api/v1/projects/{PROJECT_ID}/epics \
 ```
 
 **Checklist:**
-- [ ] All CRUD operations work for projects
-- [ ] All CRUD operations work for epics
-- [ ] All CRUD operations work for user stories
-- [ ] All CRUD operations work for tasks
-- [ ] Swagger UI shows all endpoints
-- [ ] Cascade delete works (delete project removes all children)
+- [x] All CRUD operations work for projects
+- [x] All CRUD operations work for epics
+- [x] All CRUD operations work for user stories
+- [x] All CRUD operations work for tasks
+- [x] Swagger UI shows all endpoints
+- [x] Cascade delete works (delete project removes all children)
 
 ---
 
