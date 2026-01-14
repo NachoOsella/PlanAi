@@ -41,6 +41,9 @@ The output must adhere to this exact structure:
 2. **Completeness**: If technical tasks were discussed, include them. If not, generate 2-3 logical implementation tasks for each story (e.g., "Create entity", "Implement service logic", "Write unit tests").
 3. **Prioritization**: Infer priority based on the conversation (core features are HIGH, nice-to-haves are LOW). Default to MEDIUM.
 4. **Granularity**: Ensure Epics are big, Stories are user-facing, and Tasks are developer-facing.
+5. **Ordering**: Preserve MVP-first ordering; array order represents the intended display order in the system.
+6. **Validation**: Titles must be non-empty and concise (<=150 chars). Epic descriptions <=1000 chars; task descriptions <=2000 chars.
+7. **Defaults**: If details are missing, provide sensible defaults without adding new fields.
 
 # Conversation History
 {{conversation_history}}

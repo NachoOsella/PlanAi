@@ -388,8 +388,8 @@ genai:
 
 | File Path | Purpose |
 |-----------|---------|
-| `resources/prompts/planning-assistant.txt` | System prompt for planning conversations |
-| `resources/prompts/structure-plan.txt` | Prompt to extract structured data from conversation |
+| `resources/prompts/planning-assistant.md` | System prompt for planning conversations |
+| `resources/prompts/structure-plan.md` | Prompt to extract structured data from conversation |
 
 **Planning Assistant Prompt Should:**
 - Define AI as a project planning expert
