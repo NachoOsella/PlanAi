@@ -5,27 +5,36 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.planai.exception.ResourceNotFoundException;
+import com.planai.mapper.UserStoryMapper;
 import com.planai.model.dto.request.CreateStoryRequest;
 import com.planai.model.dto.response.UserStoryResponse;
+import com.planai.model.entity.EpicEntity;
+import com.planai.model.entity.UserStoryEntity;
 import com.planai.repository.EpicRepository;
 import com.planai.repository.UserStoryRepository;
 import com.planai.service.UserStoryService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Implementation of {@link UserStoryService}.
- * Handles user story-related business logic.
+ * Implementation of {@link UserStoryService}. Handles user story-related business logic.
  */
 @Service
-@RequiredArgsConstructor
 @Slf4j
 @Transactional(readOnly = true)
 public class UserStoryServiceImpl implements UserStoryService {
 
     private final UserStoryRepository userStoryRepository;
     private final EpicRepository epicRepository;
+    private final UserStoryMapper userStoryMapper;
+
+    public UserStoryServiceImpl(UserStoryRepository userStoryRepository, EpicRepository epicRepository,
+            UserStoryMapper userStoryMapper) {
+        this.userStoryRepository = userStoryRepository;
+        this.epicRepository = epicRepository;
+        this.userStoryMapper = userStoryMapper;
+    }
 
     /**
      * Retrieves all user stories associated with a specific epic.
@@ -35,7 +44,11 @@ public class UserStoryServiceImpl implements UserStoryService {
      */
     @Override
     public List<UserStoryResponse> getEpicStories(Long epicId) {
-        return List.of();
+        if (!epicRepository.existsById(epicId)) {
+            throw new ResourceNotFoundException("Epic", epicId);
+        }
+        List<UserStoryEntity> stories = userStoryRepository.findByEpicIdOrderByOrderIndexAsc(epicId);
+        return stories.stream().map(userStoryMapper::toResponse).toList();
     }
 
     /**
@@ -48,7 +61,12 @@ public class UserStoryServiceImpl implements UserStoryService {
     @Override
     @Transactional
     public UserStoryResponse createStory(Long epicId, CreateStoryRequest request) {
-        return null;
+        EpicEntity epicEntity =
+                epicRepository.findById(epicId).orElseThrow(() -> new ResourceNotFoundException("Epic", epicId));
+        UserStoryEntity storyEntity = userStoryMapper.toEntity(request);
+        storyEntity.setEpic(epicEntity);
+        UserStoryEntity savededEntity = userStoryRepository.save(storyEntity);
+        return userStoryMapper.toResponse(savededEntity);
     }
 
     /**
@@ -61,7 +79,12 @@ public class UserStoryServiceImpl implements UserStoryService {
     @Override
     @Transactional
     public UserStoryResponse updateStory(Long storyId, CreateStoryRequest request) {
-        return null;
+        UserStoryEntity storyEntity = userStoryRepository
+                .findById(storyId)
+                .orElseThrow(() -> new ResourceNotFoundException("UserStory", storyId));
+        userStoryMapper.updateEntityFromRequest(request, storyEntity);
+        UserStoryEntity updatedEntity = userStoryRepository.save(storyEntity);
+        return userStoryMapper.toResponse(updatedEntity);
     }
 
     /**
@@ -72,5 +95,9 @@ public class UserStoryServiceImpl implements UserStoryService {
     @Override
     @Transactional
     public void deleteStory(Long storyId) {
+        if (!userStoryRepository.existsById(storyId)) {
+            throw new ResourceNotFoundException("UserStory", storyId);
+        }
+        userStoryRepository.deleteById(storyId);
     }
 }

@@ -26,6 +26,10 @@ public class UserStoryMapper {
         return modelMapper.map(request, UserStoryEntity.class);
     }
 
+    public void updateEntityFromRequest(CreateStoryRequest request, UserStoryEntity entity) {
+        modelMapper.map(request, entity);
+    }
+
     public UserStoryResponse toResponse(UserStoryEntity entity) {
         UserStoryResponse response = modelMapper.map(entity, UserStoryResponse.class);
 
