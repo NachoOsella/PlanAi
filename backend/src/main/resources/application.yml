@@ -5,6 +5,8 @@ spring:
   # Jackson Configuration
   jackson:
     property-naming-strategy: SNAKE_CASE
+    deserialization:
+      fail-on-unknown-properties: false
 
   # Database Configuration
   datasource:
@@ -35,10 +37,16 @@ spring:
     baseline-on-migrate: true
     locations: classpath:db/migration
 
-# Google Gen AI Configuration
-genai:
-  api-key: ${GOOGLE_API_KEY:your-api-key}
-  model: gemini-3-flash-preview
+  # Spring AI Configuration (Groq via OpenAI compatible API)
+  ai:
+    openai:
+      base-url: https://api.groq.com/openai
+      api-key: ${GROQ_API_KEY}
+      chat:
+        options:
+          model: llama-3.1-8b-instant
+          temperature: 0.7
+
 # Server Configuration
 server:
   port: 8080
@@ -69,7 +77,7 @@ logging:
   level:
     root: INFO
     com.planai: DEBUG
-    com.google.genai: DEBUG
+    org.springframework.ai: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 

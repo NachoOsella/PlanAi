@@ -5,7 +5,7 @@ import com.planai.model.dto.response.ChatResponse;
 import com.planai.model.dto.response.ProjectDetailResponse;
 
 /**
- * Service for handling AI interactions using Google Gemini.
+ * Service for handling AI interactions using Spring AI.
  */
 public interface AiService {
 

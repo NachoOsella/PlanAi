@@ -4,19 +4,16 @@
     <strong>AI-powered project planning assistant</strong>
   </p>
   <p align="center">
-    Chat with Google Gemini to build project plans with epics, user stories, and tasks - save and revisit anytime
+    Chat with Llama 3.3 on Groq to build project plans with epics, user stories, and tasks - save and revisit anytime
   </p>
 </p>
 
 <p align="center">
-  <a href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/Spring%20Boot-3.4.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot"></a>
+  <a href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/Spring%20Boot-3.3.4-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot"></a>
+  <a href="https://groq.com"><img src="https://img.shields.io/badge/Powered%20By-Groq-F55036?style=for-the-badge&logo=c&logoColor=white" alt="Groq"></a>
   <a href="https://angular.dev/"><img src="https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular"></a>
   <a href="https://openjdk.org/"><img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java"></a>
   <a href="https://www.postgresql.org/"><img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"></a>
-</p>
-
-<p align="center">
-  <a href="https://ai.google.dev/"><img src="https://img.shields.io/badge/Google%20Gemini-AI-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white" alt="Gemini"></a>
   <a href="https://docs.docker.com/compose/"><img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"></a>
 </p>
 
@@ -24,12 +21,12 @@
 
 ## About The Project
 
-**PlanAI** is a conversational AI application that helps users plan software projects through natural dialogue. Instead of filling out forms, users simply **chat with Google Gemini** to describe their project ideas, and the AI helps structure them into a proper hierarchy of epics, user stories, and tasks.
+**PlanAI** is a conversational AI application that helps users plan software projects through natural dialogue. Instead of filling out forms, users simply **chat with AI (Llama 3.3)** to describe their project ideas, and the AI helps structure them into a proper hierarchy of epics, user stories, and tasks.
 
 ### How It Works
 
 1. **Start a conversation** - Describe your project idea in plain language
-2. **AI builds the plan** - Gemini helps you identify epics, break them into user stories, and define tasks
+2. **AI builds the plan** - Llama 3.3 helps you identify epics, break them into user stories, and define tasks
 3. **Refine through chat** - Ask questions, add details, or restructure as needed
 4. **Save your plan** - All plans are saved to the database for future reference
 5. **View anytime** - Come back to see, edit, or continue building your plans
@@ -56,10 +53,10 @@
                           │ HTTP/REST
 ┌─────────────────────────▼───────────────────────────────────────┐
 │                         BACKEND                                 │
-│                    Spring Boot 3.4.1                            │
+│                    Spring Boot 3.3.4                            │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
-│  │ Controllers │──│  Services   │──│   Google Gemini SDK     │  │
-│  │  REST API   │  │   Logic     │  │   (Chat & Planning)     │  │
+│  │ Controllers │──│  Services   │──│   Spring AI (Groq)      │  │
+│  │  REST API   │  │   Logic     │  │   (Llama 3.3 Model)     │  │
 │  └─────────────┘  └──────┬──────┘  └─────────────────────────┘  │
 │                          │                                      │
 │  ┌───────────────────────▼──────────────────────────────────┐   │
@@ -150,12 +147,12 @@ PlanAI uses a hierarchical structure to organize project plans:
 | Technology | Purpose |
 |------------|---------|
 | **Java 21** | Core language with modern features |
-| **Spring Boot 3.4** | Framework with auto-configuration |
-| **Google Gemini SDK** | AI chat and planning capabilities |
+| **Spring Boot 3.3.4** | Framework with auto-configuration |
+| **Spring AI** | AI integration with Groq (Llama 3.3) |
 | **Spring Data JPA** | Database access layer |
 | **PostgreSQL 16** | Relational database |
 | **Lombok** | Boilerplate reduction |
-| **MapStruct** | DTO mapping |
+| **ModelMapper** | DTO mapping |
 | **SpringDoc OpenAPI** | API documentation |
 
 ### Frontend
@@ -181,7 +178,7 @@ PlanAI uses a hierarchical structure to organize project plans:
 PlanAI/
 ├── backend/
 │   ├── src/main/java/com/planai/
-│   │   ├── config/          # Configuration (CORS, Gemini, OpenAPI)
+│   │   ├── config/          # Configuration (CORS, Spring AI, OpenAPI)
 │   │   ├── controller/      # REST API endpoints
 │   │   ├── service/         # Business logic + AI service
 │   │   ├── repository/      # Data access layer
@@ -213,7 +210,7 @@ PlanAI/
 ### Prerequisites
 
 - Docker & Docker Compose
-- Google AI Studio API Key ([Get one here](https://aistudio.google.com/apikey))
+- Groq Cloud API Key ([Get one here](https://console.groq.com/keys))
 
 ### Installation
 
@@ -223,7 +220,7 @@ git clone https://github.com/NachoOsella/PlanAI.git
 cd PlanAI
 
 # Create environment file
-echo "GOOGLE_API_KEY=your-api-key-here" > .env
+echo "GROQ_API_KEY=your-api-key-here" > .env
 
 # Start all services
 docker-compose up --build
@@ -325,8 +322,8 @@ cd frontend && npm test
 ## Roadmap
 
 - [x] **Sprint 0**: Infrastructure Setup - Docker, project structure, health endpoint
-- [ ] **Sprint 1**: Data Layer - Entities (Project, Epic, Story, Task), Repositories, Services
-- [ ] **Sprint 2**: AI Integration - Gemini SDK, chat service, prompt engineering
+- [x] **Sprint 1**: Data Layer - Entities (Project, Epic, Story, Task), Repositories, Services
+- [x] **Sprint 2**: AI Integration - Spring AI, chat service, prompt engineering
 - [ ] **Sprint 3**: Frontend - Chat interface, plan viewer, state management
 - [ ] **Sprint 4**: Production - Error handling, validation, UX polish
 
@@ -350,5 +347,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <p align="center">
-  <sub>Built with Google Gemini AI</sub>
+  <sub>Built with Spring AI and Groq</sub>
 </p>

@@ -53,13 +53,13 @@ public class UserStoryEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(name = "as_a", length = 500)
+    @Column(name = "as_a", length = 4000)
     private String asA;
 
-    @Column(name = "i_want", length = 500)
+    @Column(name = "i_want", length = 4000)
     private String iWant;
 
-    @Column(name = "so_that", length = 500)
+    @Column(name = "so_that", length = 4000)
     private String soThat;
 
     @Enumerated(EnumType.STRING)

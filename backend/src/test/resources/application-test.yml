@@ -21,9 +21,9 @@ spring:
   flyway:
     enabled: false
 
-# Disable Gen AI for tests
-genai:
-  enabled: false
+  ai:
+    openai:
+      api-key: test
 
 logging:
   level:

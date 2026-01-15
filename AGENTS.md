@@ -6,8 +6,8 @@ This document provides essential instructions, commands, and conventions for AI 
 
 **PlanAI** is a conversational AI application for project planning.
 - **Frontend**: Angular 21 + TypeScript 5.9 + SCSS
-- **Backend**: Spring Boot 3.4.1 + Java 21 + PostgreSQL 16
-- **AI**: Google Gemini SDK
+- **Backend**: Spring Boot 3.3.4 + Java 21 + PostgreSQL 16
+- **AI**: Spring AI with Groq (Llama 3.3)
 
 ## 2. Build, Run, and Test Commands
 
@@ -44,7 +44,9 @@ This document provides essential instructions, commands, and conventions for AI 
 
 ### Backend (Java/Spring Boot)
 - **Java Version**: 21
-- **Framework**: Spring Boot 3.4
+- **Framework**: Spring Boot 3.3.4
+- **AI Integration**: Spring AI with Groq (Llama 3.3)
+- **Context Strategy**: Inject full project hierarchy (Epics/Stories/Tasks) into System Prompt.
 - **Boilerplate**: Use **Lombok** (`@Data`, `@Builder`, `@RequiredArgsConstructor`, `@Slf4j`) to reduce boilerplate.
 - **DTO Mapping**: Use **ModelMapper** or MapStruct.
 - **API Documentation**: Use **SpringDoc OpenAPI** annotations for controllers.

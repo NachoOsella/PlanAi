@@ -66,11 +66,11 @@ PROJECT (e.g., "E-Commerce Platform")
 - [x] Frontend Angular app skeleton
 
 **What You Need to Build:**
-- [ ] JPA Entities for all tables (JPA will auto-generate tables)
-- [ ] Repositories, DTOs, Mappers
-- [ ] Services with business logic
-- [ ] REST Controllers
-- [ ] AI Chat Service with Gemini SDK
+- [x] JPA Entities for all tables (JPA will auto-generate tables)
+- [x] Repositories, DTOs, Mappers
+- [x] Services with business logic
+- [x] REST Controllers
+- [x] AI Chat Service with Spring AI
 - [ ] Frontend chat interface
 - [ ] Frontend plan viewer
 
@@ -88,7 +88,7 @@ Before starting, verify you have:
 - [x] Node 20.x (`node --version`)
 - [x] npm 10.x (`npm --version`)
 - [x] Git 2.x (`git --version`)
-- [x] Google AI Studio API Key from https://aistudio.google.com/apikey
+- [x] Groq API Key from https://console.groq.com/keys
 
 ### 2.2 Setup Commands
 
@@ -96,8 +96,8 @@ Before starting, verify you have:
 # 1. Navigate to project
 cd ~/Documents/practica/PlanAi
 
-# 2. Create .env file with your API key
-echo "GOOGLE_API_KEY=your-actual-api-key" > .env
+# 2. Create .env file with your configuration
+echo "GROQ_API_KEY=your-groq-api-key" > .env
 echo "POSTGRES_USER=postgres" >> .env
 echo "POSTGRES_PASSWORD=postgres" >> .env
 echo "POSTGRES_DB=planai_db" >> .env
@@ -358,27 +358,33 @@ curl -X POST http://localhost:8080/api/v1/projects/{PROJECT_ID}/epics \
 
 ## 4. Sprint 2: AI Integration
 
-> **Goal**: Integrate Google Gemini for conversational planning.
+> **Goal**: Integrate Groq (Llama 3.3) via Spring AI for conversational planning with full context awareness.
 
-### 4.1 Gemini SDK Configuration
+### 4.1 Spring AI Configuration
 
 **Task: Create AI configuration**
 
 | File to Create | Purpose |
 |----------------|---------|
-| `config/GenAiConfig.java` | Configure Gemini SDK client as Spring bean |
+| `config/AiConfig.java` | Configure Spring AI ChatClient as Spring bean |
 
 **Configuration properties (in application.yml):**
 ```yaml
-genai:
-  api-key: ${GOOGLE_API_KEY}
-  model: gemini-2.5-flash
+spring:
+  ai:
+    openai:
+      base-url: https://api.groq.com/openai
+      api-key: ${GROQ_API_KEY}
+      chat:
+        options:
+          model: llama-3.3-70b-versatile
+          temperature: 0.7
 ```
 
 **Why a config class?**
-- Creates a reusable `Client` bean
-- Centralizes API key handling
-- Supports both Gemini API and Vertex AI modes
+- Creates a reusable `ChatClient` bean
+- Centralizes AI configuration
+- Uses OpenAI compatibility layer to talk to Groq's high-performance inference engine
 
 ---
 
@@ -406,32 +412,67 @@ genai:
 
 ### 4.3 AI Service
 
-**Task: Create AI service class**
+**Task: Create AI service class with Context Injection**
 
 | File to Create | Key Methods |
 |----------------|-------------|
-| `service/AiService.java` | `chat()`, `extractPlan()` |
+| `service/AiService.java` | `chat()`, `extractPlan()`, `buildProjectContext()` |
+
+**Context Injection Strategy:**
+To ensure the AI understands the full scope of the project, we will inject the entire project hierarchy (Epics -> Stories -> Tasks) into the system prompt on every request.
 
 **chat() method should:**
-1. Load or create conversation
-2. Save user message
-3. Build prompt with conversation history
-4. Call Gemini SDK
-5. Save assistant response
-6. Return both messages
+1. Load the Project entity with all relationships fetched (use `@EntityGraph` or specific repository method)
+2. **Serialize** the project state into a readable text block (e.g., Markdown or JSON)
+3. Load conversation history
+4. Build the System Prompt:
+   ```text
+   You are an expert Project Manager.
+   Current Project State:
+   [Insert serialized project data here]
+   
+   Help the user refine this plan.
+   ```
+5. Call Spring AI `ChatClient` with user message
+6. Save and return response
+
+**Spring AI Example:**
+```java
+@Service
+@RequiredArgsConstructor
+public class AiService {
+    private final ChatClient chatClient;
+    private final ProjectRepository projectRepository;
+    
+    public String chat(UUID projectId, String userMessage) {
+        // 1. Get full context
+        Project project = projectRepository.findByIdWithHierarchy(projectId)
+            .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+            
+        String projectContext = formatProjectAsString(project);
+        
+        // 2. Build Prompt with Context
+        SystemPromptTemplate systemPrompt = new SystemPromptTemplate(
+            "You are a PM. Current Project Context:\n{context}"
+        );
+        Message systemMessage = systemPrompt.createMessage(Map.of("context", projectContext));
+        
+        // 3. Call AI
+        return chatClient.call(new Prompt(List.of(systemMessage, new UserMessage(userMessage))))
+            .getResult().getOutput().getText();
+    }
+}
+```
 
 **extractPlan() method should:**
-1. Get full conversation history
-2. Send to AI with structure prompt
-3. Parse JSON response
-4. Create entities (epics, stories, tasks)
-5. Return created plan
+1. Similar context injection
+2. Use Spring AI's `BeanOutputConverter` or `StructuredOutputConverter` to parse response into `PlanUpdateDto`
+3. Update entities based on AI suggestion
 
 **Error Handling:**
-- [ ] Retry logic with exponential backoff (3 attempts)
-- [ ] Handle empty responses
-- [ ] Validate JSON structure
-- [ ] Throw `AiGenerationException` on failure
+- [ ] Handle Context Limit: If project gets too huge, summarize tasks (though Llama 3.3 has a large context window)
+- [ ] Retry logic
+- [ ] JSON parsing fallback
 
 ---
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.planai.model.entity.ProjectEntity;
 
@@ -28,5 +29,17 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
      */
     @EntityGraph(attributePaths = "epics")
     Optional<ProjectEntity> findById(Long id);
+
+    /**
+     * Find a ProjectEntity by its ID, including its epics.
+     *
+     * Stories and tasks are loaded lazily to avoid MultipleBagFetchException for nested List mappings.
+     *
+     * @param id The ID of the project to find.
+     * @return An Optional containing the ProjectEntity with its epics.
+     */
+    @EntityGraph(attributePaths = "epics")
+    @Query("SELECT p FROM ProjectEntity p WHERE p.id = :id")
+    Optional<ProjectEntity> findByIdWithHierarchy(Long id);
 
 }

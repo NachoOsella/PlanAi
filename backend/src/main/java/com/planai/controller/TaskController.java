@@ -18,6 +18,9 @@ import com.planai.model.dto.response.TaskResponse;
 import com.planai.service.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -34,27 +37,48 @@ public class TaskController {
 
     @GetMapping("/stories/{storyId}/tasks")
     @Operation(summary = "Get all tasks for a story")
-    public ResponseEntity<List<TaskResponse>> getStoryTasks(@PathVariable Long storyId) {
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tasks retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Story not found")
+    })
+    public ResponseEntity<List<TaskResponse>> getStoryTasks(
+            @Parameter(description = "Story ID") @PathVariable Long storyId) {
         return ResponseEntity.ok(taskService.getStoryTasks(storyId));
     }
 
     @PostMapping("/stories/{storyId}/tasks")
     @Operation(summary = "Create a new task in a story")
-    public ResponseEntity<TaskResponse> createTask(@PathVariable Long storyId,
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Task created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid task data"),
+            @ApiResponse(responseCode = "404", description = "Story not found")
+    })
+    public ResponseEntity<TaskResponse> createTask(
+            @Parameter(description = "Story ID") @PathVariable Long storyId,
             @Valid @RequestBody CreateTaskRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(storyId, request));
     }
 
     @PutMapping("/tasks/{id}")
     @Operation(summary = "Update a task")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id,
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Task updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid task data"),
+            @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    public ResponseEntity<TaskResponse> updateTask(
+            @Parameter(description = "Task ID") @PathVariable Long id,
             @Valid @RequestBody CreateTaskRequest request) {
         return ResponseEntity.ok(taskService.updateTask(id, request));
     }
 
     @DeleteMapping("/tasks/{id}")
     @Operation(summary = "Delete a task")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Task deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    public ResponseEntity<Void> deleteTask(@Parameter(description = "Task ID") @PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }

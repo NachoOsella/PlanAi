@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 # Build stage
 FROM eclipse-temurin:21-jdk-alpine AS build
 
@@ -8,13 +9,13 @@ COPY mvnw pom.xml ./
 COPY .mvn .mvn
 
 # Download dependencies (cached layer)
-RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B -Dmaven.repo.local=/root/.m2/repository
 
 # Copy source code
 COPY src src
 
 # Build the application
-RUN ./mvnw package -DskipTests -B
+RUN ./mvnw package -DskipTests -B -Dmaven.repo.local=/root/.m2/repository
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine

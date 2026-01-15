@@ -56,7 +56,7 @@ public class MessageEntity {
     @Column(nullable = false)
     private MessageRoleEnum role;
 
-    @Column(nullable = false, length = 4000)
+    @Column(nullable = false, length = 10000)
     private String content;
 }
 

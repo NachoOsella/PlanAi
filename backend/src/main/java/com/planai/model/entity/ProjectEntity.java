@@ -45,7 +45,7 @@ public class ProjectEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(length = 2000)
+    @Column(length = 10000)
     private String description;
 
     @CreationTimestamp

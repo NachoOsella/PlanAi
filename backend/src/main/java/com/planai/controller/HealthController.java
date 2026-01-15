@@ -1,6 +1,8 @@
 package com.planai.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,9 @@ public class HealthController {
 
     @GetMapping("/health")
     @Operation(summary = "Health check", description = "Returns the health status of the application")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Service is healthy")
+    })
     public ResponseEntity<Map<String, Object>> health() {
         return ResponseEntity.ok(Map.of(
                 "status", "UP",

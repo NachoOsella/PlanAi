@@ -53,7 +53,7 @@ public class EpicEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 2000)
+    @Column(length = 10000)
     private String description;
 
     @Enumerated(EnumType.STRING)
