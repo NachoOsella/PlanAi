@@ -574,7 +574,9 @@ curl -X POST http://localhost:8080/api/v1/projects/{PROJECT_ID}/extract-plan
 | ErrorMessage | Display errors with dismiss |
 | Card | Container with shadow |
 | Button | Styled button with variants |
-| ChatBubble | Message display (user vs assistant) |
+| ChatBubble | Message display (user vs assistant) with Markdown support |
+
+**Important Note for Frontend**: Since the AI sends responses in Markdown format, the `ChatBubble` component must use a library like `ngx-markdown` or `marked` to render the content safely as HTML.
 
 ---
 
