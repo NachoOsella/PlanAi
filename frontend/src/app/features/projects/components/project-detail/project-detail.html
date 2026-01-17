@@ -1,1 +1,147 @@
-<p>project-detail works!</p>
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 bg-white dark:bg-background-dark/50 backdrop-blur-md z-10">
+  <div class="flex items-center gap-2">
+    <a class="text-slate-400 text-sm font-medium hover:text-primary transition-colors" [routerLink]="['/projects']">Projects</a>
+    <span class="text-slate-300 text-sm material-symbols-outlined scale-75">chevron_right</span>
+    <span class="text-slate-900 dark:text-white text-sm font-semibold">{{ projectStore.selectedProject()?.name || 'Loading...' }}</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <button
+      (click)="onRefreshPlan()"
+      class="h-9 px-3 rounded-xl flex items-center gap-2 text-slate-600 hover:text-primary hover:bg-primary/10 transition-all border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+      title="Update the live plan from the latest AI conversation"
+    >
+      <span class="material-symbols-outlined text-lg">autorenew</span>
+      <span class="text-xs font-semibold">Update Plan</span>
+    </button>
+    <a 
+      [routerLink]="['/projects', projectStore.selectedProject()?.id, 'overview']"
+      class="h-9 px-3 rounded-xl flex items-center gap-2 text-slate-600 hover:text-primary hover:bg-primary/10 transition-all border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+    >
+      <span class="material-symbols-outlined text-lg">view_column</span>
+      <span class="text-xs font-semibold">Plan Overview</span>
+    </a>
+  </div>
+</header>
+
+<div class="flex-1 flex overflow-hidden">
+  <!-- Left Side: AI Chat -->
+  <div class="w-1/2 flex flex-col border-r border-slate-200 dark:border-slate-800 relative bg-[#fcfcfd] dark:bg-background-dark/30">
+    <app-chat-panel [projectId]="projectStore.selectedProject()?.id?.toString() || null" />
+  </div>
+
+  <!-- Right Side: Plan Viewer -->
+  <div class="w-1/2 flex flex-col bg-slate-50 dark:bg-background-dark/10">
+    <div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary">account_tree</span>
+          Live Plan Structure
+        </h2>
+      </div>
+
+      <div class="space-y-6">
+        @for (epic of projectStore.selectedProject()?.epics ?? []; track epic.id) {
+          <div 
+            class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group"
+            (click)="openEditModal('epic', epic)"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold">EPIC</span>
+                  <h3 class="font-bold text-slate-800 dark:text-white group-hover:text-primary transition-colors">{{ epic.title }}</h3>
+                </div>
+                <p class="text-xs text-slate-500">{{ epic.description }}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span 
+                  class="px-2 py-0.5 rounded text-[10px] font-bold"
+                  [class.bg-red-100.text-red-600]="epic.priority === 'HIGH'"
+                  [class.bg-yellow-100.text-yellow-600]="epic.priority === 'MEDIUM'"
+                  [class.bg-green-100.text-green-600]="epic.priority === 'LOW'"
+                >
+                  {{ epic.priority }}
+                </span>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">edit</span>
+              </div>
+            </div>
+            <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full mb-6 overflow-hidden">
+              <div class="h-full bg-primary transition-all" [style.width.%]="getEpicProgress(epic)"></div>
+            </div>
+            
+            <div class="space-y-4">
+              @for (story of epic.stories; track story.id) {
+                <div class="space-y-2" (click)="$event.stopPropagation()">
+                  <div 
+                    class="flex items-center gap-3 group/story p-2 -mx-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                    (click)="openEditModal('story', story)"
+                  >
+                    <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1">article</span>
+                    <p class="text-sm font-semibold text-slate-800 dark:text-white flex-1 group-hover/story:text-primary transition-colors">{{ story.title }}</p>
+                    <span 
+                      class="px-2 py-0.5 rounded text-[10px] font-bold"
+                      [class.bg-red-100.text-red-600]="story.priority === 'HIGH'"
+                      [class.bg-yellow-100.text-yellow-600]="story.priority === 'MEDIUM'"
+                      [class.bg-green-100.text-green-600]="story.priority === 'LOW'"
+                    >
+                      {{ story.priority }}
+                    </span>
+                    <span class="material-symbols-outlined text-slate-300 group-hover/story:text-primary transition-colors text-sm">edit</span>
+                  </div>
+                  
+                  <!-- Tasks -->
+                  <div class="ml-8 space-y-1 border-l-2 border-slate-100 dark:border-slate-700 pl-4">
+                    @for (task of story.tasks; track task.id) {
+                      <div 
+                        class="flex items-center gap-2 group/task p-1.5 -mx-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                        (click)="openEditModal('task', task); $event.stopPropagation()"
+                      >
+                        <span class="material-symbols-outlined text-slate-400 text-base" [class.text-green-500]="task.status === 'DONE'">
+                          {{ task.status === 'DONE' ? 'check_circle' : 'radio_button_unchecked' }}
+                        </span>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 flex-1 group-hover/task:text-primary transition-colors" [class.line-through]="task.status === 'DONE'">{{ task.title }}</p>
+                        <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded"
+                          [class.bg-green-100.text-green-600]="task.status === 'DONE'"
+                          [class.bg-blue-100.text-blue-600]="task.status === 'IN_PROGRESS'"
+                          [class.bg-slate-100.text-slate-500]="task.status === 'TODO'"
+                        >
+                          {{ task.status === 'IN_PROGRESS' ? 'WIP' : task.status }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        } @empty {
+          <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-8">
+            <div class="flex flex-col items-center justify-center text-slate-400 gap-2 cursor-pointer hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-3xl">add_circle</span>
+              <span class="text-sm font-medium">No epics defined yet. Start chat to generate them.</span>
+            </div>
+          </div>
+        }
+
+        @if (chatStore.sending()) {
+          <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-5 animate-pulse">
+            <div class="flex items-center justify-center h-20 text-slate-400 gap-2">
+              <span class="material-symbols-outlined animate-spin">sync</span>
+              <span class="text-sm font-medium">Drafting next epic based on conversation...</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+@if (editModalData()) {
+  <app-item-edit-modal
+    [data]="editModalData()"
+    (close)="closeEditModal()"
+    (save)="onSaveItem($event)"
+    (delete)="onDeleteItem($event)"
+  />
+}

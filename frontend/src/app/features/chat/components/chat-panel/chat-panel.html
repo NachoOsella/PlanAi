@@ -1,1 +1,95 @@
-<p>chat-panel works!</p>
+<div class="h-full flex flex-col relative bg-[#fcfcfd] dark:bg-background-dark/30">
+  <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6" #messagesContainer>
+    @for (message of chatStore.messages(); track message.id) {
+      <div class="flex items-start gap-4" [class.flex-row-reverse]="message.role === 'USER'">
+        <div 
+          class="size-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm"
+          [class.bg-white.dark:bg-slate-800.border.border-slate-200.dark:border-slate-700]="message.role === 'ASSISTANT'"
+          [class.bg-primary.shadow-lg.shadow-primary/20]="message.role === 'USER'"
+        >
+          <span 
+            class="material-symbols-outlined text-xl"
+            [class.text-primary]="message.role === 'ASSISTANT'"
+            [class.text-white]="message.role === 'USER'"
+          >
+            {{ message.role === 'ASSISTANT' ? 'smart_toy' : 'person' }}
+          </span>
+        </div>
+        <div class="flex flex-col gap-1 max-w-[85%]" [class.items-end]="message.role === 'USER'">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-tight px-1">
+            {{ message.role === 'ASSISTANT' ? 'PlanAI' : 'You' }}
+          </p>
+          <div 
+            class="p-4 rounded-2xl shadow-sm"
+            [class.bg-white.dark:bg-slate-800.border.border-slate-200.dark:border-slate-700.rounded-tl-none]="message.role === 'ASSISTANT'"
+            [class.bg-primary.text-white.shadow-md.rounded-tr-none]="message.role === 'USER'"
+          >
+            <!-- Markdown rendered content -->
+            <div 
+              class="prose prose-sm max-w-none dark:prose-invert prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 prose-headings:my-2"
+              [class.text-slate-700.dark:text-slate-300]="message.role === 'ASSISTANT'"
+              [innerHTML]="message.content | markdown"
+            ></div>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="h-full flex flex-col items-center justify-center text-center p-8">
+        <div class="size-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-3xl text-primary">auto_awesome</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">Welcome to PlanAI</h3>
+        <p class="text-sm text-slate-500 max-w-xs">
+          Start a conversation to define your project structure. I'll help you create epics, stories, and tasks.
+        </p>
+      </div>
+    }
+
+    <!-- Sending indicator in chat -->
+    @if (chatStore.sending()) {
+      <div class="flex items-start gap-4">
+        <div class="size-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="material-symbols-outlined text-xl text-primary animate-pulse">smart_toy</span>
+        </div>
+        <div class="flex flex-col gap-1 max-w-[85%]">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-tight px-1">PlanAI</p>
+          <div class="p-4 rounded-2xl shadow-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-tl-none">
+            <div class="flex items-center gap-2 text-slate-400">
+              <span class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+              <span class="text-sm">Thinking...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Input Area -->
+  <div class="p-6">
+    <div class="relative max-w-2xl mx-auto">
+      <input 
+        class="w-full h-14 bg-white dark:bg-slate-800 border-none rounded-2xl pl-16 pr-24 shadow-xl shadow-slate-200/50 dark:shadow-none ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
+        placeholder="Type a command or ask to change the plan..." 
+        type="text"
+        #chatInput
+        [disabled]="chatStore.sending()"
+        (keyup.enter)="onSendMessage(chatInput.value); chatInput.value = ''"
+      />
+      <div class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none">
+        <div class="size-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+          <span class="material-symbols-outlined text-xl">terminal</span>
+        </div>
+      </div>
+      <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+        <button 
+          class="size-9 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="chatStore.sending()"
+          (click)="onSendMessage(chatInput.value); chatInput.value = ''"
+        >
+          <span class="material-symbols-outlined text-xl">arrow_upward</span>
+        </button>
+      </div>
+    </div>
+    <p class="text-center text-[10px] text-slate-400 mt-4 font-medium uppercase tracking-widest">Press Enter to send</p>
+  </div>
+</div>

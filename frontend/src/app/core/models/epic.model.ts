@@ -1,56 +1,87 @@
 export enum Priority {
   HIGH = 'HIGH',
   MEDIUM = 'MEDIUM',
-  LOW = 'LOW'
+  LOW = 'LOW',
 }
 
 export enum Status {
   TODO = 'TODO',
   IN_PROGRESS = 'IN_PROGRESS',
-  DONE = 'DONE'
+  DONE = 'DONE',
 }
 
 export interface Task {
-  id: string;
+  id: number;
   title: string;
   description?: string;
   status: Status;
   estimatedHours?: number;
-  order: number;
+  orderIndex?: number;
 }
 
 export interface UserStory {
-  id: string;
+  id: number;
   title: string;
   asA?: string;
   iWant?: string;
   soThat?: string;
   priority: Priority;
   status: Status;
-  order: number;
+  orderIndex?: number;
   tasks: Task[];
 }
 
 export interface Epic {
-  id: string;
+  id: number;
   title: string;
   description?: string;
   priority: Priority;
   status: Status;
-  order: number;
+  orderIndex?: number;
   stories: UserStory[];
 }
 
+// Request DTOs
 export interface CreateEpicRequest {
   title: string;
   description?: string;
-  priority: Priority;
+  priority?: Priority;
 }
 
 export interface UpdateEpicRequest {
   title?: string;
   description?: string;
   priority?: Priority;
+}
+
+export interface CreateStoryRequest {
+  title: string;
+  asA?: string;
+  iWant?: string;
+  soThat?: string;
+  priority?: Priority;
+}
+
+export interface UpdateStoryRequest {
+  title?: string;
+  asA?: string;
+  iWant?: string;
+  soThat?: string;
+  priority?: Priority;
   status?: Status;
+  order?: number;
+}
+
+export interface CreateTaskRequest {
+  title: string;
+  description?: string;
+  estimatedHours?: number;
+}
+
+export interface UpdateTaskRequest {
+  title?: string;
+  description?: string;
+  status?: Status;
+  estimatedHours?: number;
   order?: number;
 }

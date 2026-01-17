@@ -54,11 +54,12 @@ services:
       - "4200:4200"
     depends_on:
       - backend
-    # Para desarrollo con hot-reload, descomenta los volumes:
-    # volumes:
-    #   - ./frontend/src:/app/src
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   postgres_data:

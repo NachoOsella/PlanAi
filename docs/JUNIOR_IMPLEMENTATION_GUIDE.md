@@ -30,24 +30,19 @@ PlanAI is a web application where:
 3. **User saves the plan** to view and edit anytime
 4. **Chat history is preserved** so users can continue conversations
 
-### 1.2 The Data Hierarchy
+### 1.2 The Live Plan Structure
 
 ```
-PROJECT (e.g., "E-Commerce Platform")
+PROJECT (e.g., "E-Commerce App")
     │
     ├── EPIC (e.g., "User Authentication")
     │       │
-    │       ├── USER STORY (e.g., "As a user, I want to register...")
-    │       │       │
-    │       │       ├── TASK (e.g., "Create registration form")
-    │       │       ├── TASK (e.g., "Implement email validation")
-    │       │       └── TASK (e.g., "Add password strength check")
-    │       │
-    │       └── USER STORY (e.g., "As a user, I want to login...")
-    │               └── ...tasks...
+    │       ├── USER STORY (e.g., "Social OAuth integration")
+    │       ├── USER STORY (e.g., "Password reset flow")
     │
-    └── EPIC (e.g., "Product Catalog")
-            └── ...stories and tasks...
+    └── EPIC (e.g., "Post-Purchase Experience")
+            ├── USER STORY (e.g., "Email notification service")
+            └── USER STORY (e.g., "Real-time delivery map")
 ```
 
 **Why this hierarchy?**
@@ -71,8 +66,9 @@ PROJECT (e.g., "E-Commerce Platform")
 - [x] Services with business logic
 - [x] REST Controllers
 - [x] AI Chat Service with Spring AI
-- [ ] Frontend chat interface
-- [ ] Frontend plan viewer
+- [x] Frontend chat interface (Scaffolding complete)
+- [x] Frontend plan viewer (Scaffolding complete)
+- [x] UI/UX Dashboard Redesign (Tailwind + Modern Layout)
 
 ---
 
@@ -548,51 +544,21 @@ curl -X POST http://localhost:8080/api/v1/projects/{PROJECT_ID}/extract-plan
 
 ---
 
-### 5.3 State Management
+### 5. Sprint 3: Frontend Implementation
 
-**Task: Create signal-based stores**
+> **Goal**: Build the modern Angular UI with a split-view dashboard and real-time project management.
 
-| Store | File Path | State |
-|-------|-----------|-------|
-| ProjectStore | `features/projects/state/project.store.ts` | projects, selectedProject, loading, error |
-| ChatStore | `features/chat/state/chat.store.ts` | messages, conversationId, sending |
+### 5.1 UI/UX Architecture
+PlanAI uses a **modern, split-view dashboard** designed for productivity:
+- **Left Panel (Sidebar)**: High-level navigation and "Active Projects" list. Features a click-activated dropdown (3-dots) for Project Actions (Edit/Delete).
+- **Main View (Split)**:
+    - **AI Chat (Left)**: Interactive conversation history with role-based styling (AI vs. User).
+    - **Live Plan (Right)**: Real-time hierarchical visualization of Epics and User Stories with progress tracking.
 
-**Why Signals?**
-- Built into Angular (no external library)
-- Simpler than RxJS BehaviorSubjects
-- Better change detection performance
-
----
-
-### 5.4 Shared Components
-
-**Task: Create reusable UI components**
-
-| Component | Purpose |
-|-----------|---------|
-| LoadingSpinner | Show loading state |
-| ErrorMessage | Display errors with dismiss |
-| Card | Container with shadow |
-| Button | Styled button with variants |
-| ChatBubble | Message display (user vs assistant) with Markdown support |
-
-**Important Note for Frontend**: Since the AI sends responses in Markdown format, the `ChatBubble` component must use a library like `ngx-markdown` or `marked` to render the content safely as HTML.
-
----
-
-### 5.5 Feature Components
-
-**Task: Create feature components**
-
-| Component | Route | Purpose |
-|-----------|-------|---------|
-| ProjectList | `/projects` | List all projects |
-| ProjectCreate | `/projects/new` | Create project form |
-| ProjectDetail | `/projects/:id` | Project overview + chat + plan |
-| ChatPanel | (embedded) | Chat interface |
-| PlanViewer | (embedded) | Hierarchical plan display |
-| EpicCard | (embedded) | Single epic with stories |
-| StoryCard | (embedded) | Single story with tasks |
+### 5.2 Core Technologies
+- **Tailwind CSS**: Utility-first styling with a custom design system (primary: `#6467f2`).
+- **Material Symbols**: Google's modern icon set for high-fidelity UI elements.
+- **Angular Signals**: Used for reactive state management via `ProjectStore` and `ChatStore`.
 
 ---
 

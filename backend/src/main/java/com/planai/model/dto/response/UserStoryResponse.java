@@ -2,6 +2,7 @@ package com.planai.model.dto.response;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.planai.model.enums.PriorityEnum;
 import com.planai.model.enums.StatusEnum;
 
@@ -20,10 +21,13 @@ public class UserStoryResponse {
 
     private String title;
 
+    @JsonProperty("as_a")
     private String asA;
 
+    @JsonProperty("i_want")
     private String iWant;
 
+    @JsonProperty("so_that")
     private String soThat;
 
     private PriorityEnum priority;
