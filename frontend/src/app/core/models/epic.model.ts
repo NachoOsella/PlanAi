@@ -46,12 +46,14 @@ export interface CreateEpicRequest {
   title: string;
   description?: string;
   priority?: Priority;
+  status?: Status;
 }
 
 export interface UpdateEpicRequest {
   title?: string;
   description?: string;
   priority?: Priority;
+  status?: Status;
 }
 
 export interface CreateStoryRequest {
@@ -60,6 +62,7 @@ export interface CreateStoryRequest {
   iWant?: string;
   soThat?: string;
   priority?: Priority;
+  status?: Status;
 }
 
 export interface UpdateStoryRequest {
@@ -76,6 +79,7 @@ export interface CreateTaskRequest {
   title: string;
   description?: string;
   estimatedHours?: number;
+  status?: Status;
 }
 
 export interface UpdateTaskRequest {

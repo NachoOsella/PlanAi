@@ -6,7 +6,7 @@
         [routerLink]="['/projects']"
         class="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-4 group"
       >
-        <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform" aria-hidden="true">arrow_back</span>
         <span class="text-sm font-semibold">Back to Projects</span>
       </button>
       <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Create New Project</h1>
@@ -14,14 +14,14 @@
     </div>
 
     <!-- Form Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden">
+    <form class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden" (ngSubmit)="onSubmit()">
       <div class="p-8 space-y-8">
         <!-- Project Name -->
         <div class="space-y-2">
           <label for="projectName" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Project Name</label>
           <div class="relative">
             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-              <span class="material-symbols-outlined">folder</span>
+              <span class="material-symbols-outlined" aria-hidden="true">folder</span>
             </div>
             <input 
               id="projectName"
@@ -29,9 +29,10 @@
               #nameInput
               placeholder="e.g. NextGen Mobile App"
               class="w-full h-14 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl pl-12 pr-4 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white"
+              required
             />
           </div>
-          <p class="text-xs text-slate-400">A clear, concise name for your project.</p>
+          <p id="projectName-hint" class="text-xs text-slate-400">A clear, concise name for your project.</p>
         </div>
 
         <!-- Description -->
@@ -39,7 +40,7 @@
           <label for="description" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Description</label>
           <div class="relative">
             <div class="absolute left-4 top-4 text-slate-400">
-              <span class="material-symbols-outlined">description</span>
+              <span class="material-symbols-outlined" aria-hidden="true">description</span>
             </div>
             <textarea 
               id="description"
@@ -49,13 +50,13 @@
               class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-2xl pl-12 pr-4 py-4 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white resize-none"
             ></textarea>
           </div>
-          <p class="text-xs text-slate-400">Provide context so the AI can generate better epics and stories.</p>
+          <p id="description-hint" class="text-xs text-slate-400">Provide context so the AI can generate better epics and stories.</p>
         </div>
 
         <!-- AI Assistant Preview -->
         <div class="p-6 rounded-2xl bg-primary/5 border border-primary/10 flex gap-4">
           <div class="size-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary shrink-0">
-            <span class="material-symbols-outlined">auto_awesome</span>
+            <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
           </div>
           <div>
             <h4 class="text-sm font-bold text-primary mb-1">AI Planning Ready</h4>
@@ -69,19 +70,20 @@
       <!-- Action Buttons -->
       <div class="p-8 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700 flex items-center justify-end gap-4">
         <button 
+          type="button"
           (click)="onCancel()"
           class="px-6 py-3 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
         >
           Cancel
         </button>
         <button 
-          (click)="onSubmit()"
+          type="submit"
           class="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary/20 flex items-center gap-2"
         >
           Create Project
-          <span class="material-symbols-outlined text-lg">rocket_launch</span>
+          <span class="material-symbols-outlined text-lg" aria-hidden="true">rocket_launch</span>
         </button>
       </div>
-    </div>
+    </form>
   </div>
 </div>

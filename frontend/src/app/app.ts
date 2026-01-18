@@ -18,6 +18,7 @@ export class App implements OnInit {
   readonly projectModalMode = signal<'edit' | 'delete'>('edit');
   readonly selectedProject = signal<Project | null>(null);
   readonly openMenuId = signal<number | null>(null);
+  readonly sidebarOpen = signal(false);
 
   ngOnInit(): void {
     this.projectStore.loadProjects();
@@ -31,6 +32,15 @@ export class App implements OnInit {
   @HostListener('document:keydown.escape')
   onEscape(): void {
     this.openMenuId.set(null);
+    this.sidebarOpen.set(false);
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen.update(v => !v);
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen.set(false);
   }
 
   toggleMenu(projectId: number): void {

@@ -1,351 +1,170 @@
 <p align="center">
   <h1 align="center">PlanAI</h1>
   <p align="center">
-    <strong>AI-powered project planning assistant</strong>
+    <strong>AI-Native Project Planning Assistant</strong>
   </p>
   <p align="center">
-    Chat with Llama 3.3 on Groq to build project plans with epics, user stories, and tasks - save and revisit anytime
+    A full-stack application demonstrating modern Backend Engineering & AI Agent Integration.
+    <br/>
+    <em>Built to showcase robust API design, database modeling, and LLM orchestration.</em>
   </p>
 </p>
 
 <p align="center">
   <a href="https://spring.io/projects/spring-boot"><img src="https://img.shields.io/badge/Spring%20Boot-3.3.4-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot"></a>
-  <a href="https://groq.com"><img src="https://img.shields.io/badge/Powered%20By-Groq-F55036?style=for-the-badge&logo=c&logoColor=white" alt="Groq"></a>
-  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular"></a>
+  <a href="https://groq.com"><img src="https://img.shields.io/badge/AI%20Model-Llama%203.3%20(Groq)-F55036?style=for-the-badge&logo=c&logoColor=white" alt="Groq"></a>
   <a href="https://openjdk.org/"><img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java"></a>
   <a href="https://www.postgresql.org/"><img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"></a>
+  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular"></a>
   <a href="https://docs.docker.com/compose/"><img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"></a>
 </p>
 
 ---
 
-## About The Project
+## 📺 Demo
 
-**PlanAI** is a conversational AI application that helps users plan software projects through natural dialogue. Instead of filling out forms, users simply **chat with AI (Llama 3.3)** to describe their project ideas, and the AI helps structure them into a proper hierarchy of epics, user stories, and tasks.
-
-### How It Works
-
-1. **Start a conversation** - Describe your project idea in plain language
-2. **AI builds the plan** - Llama 3.3 helps you identify epics, break them into user stories, and define tasks
-3. **Refine through chat** - Ask questions, add details, or restructure as needed
-4. **Save your plan** - All plans are saved to the database for future reference
-5. **View anytime** - Come back to see, edit, or continue building your plans
-
-### Key Features
-
-- **Chat-First Planning**: Natural conversation with AI to build project plans
-- **Hierarchical Structure**: Organize work as Projects → Epics → User Stories → Tasks
-- **Persistent Storage**: All plans and chat history saved to PostgreSQL
-- **Plan Viewer**: Browse and review saved plans with full hierarchy
-- **RESTful API**: Well-documented API with Swagger UI
-- **Modern UI**: Angular SPA with reactive chat interface
+<!-- REPLACE THE LINK BELOW WITH YOUR VIDEO URL/GIF -->
+<div align="center">
+  <img src="https://via.placeholder.com/800x450.png?text=PlanAI+Demo+Video+Placeholder" alt="PlanAI Demo" width="100%">
+  <p><em>Watch how PlanAI turns a simple idea into a structured project plan in seconds.</em></p>
+</div>
 
 ---
 
-## Architecture
+## 🎯 Project Context & Goal
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         FRONTEND                                │
-│                    Angular 21 + TypeScript                      │
-│              Chat Interface │ Plan Viewer │ Signals             │
-└─────────────────────────┬───────────────────────────────────────┘
-                          │ HTTP/REST
-┌─────────────────────────▼───────────────────────────────────────┐
-│                         BACKEND                                 │
-│                    Spring Boot 3.3.4                            │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
-│  │ Controllers │──│  Services   │──│   Spring AI (Groq)      │  │
-│  │  REST API   │  │   Logic     │  │   (Llama 3.3 Model)     │  │
-│  └─────────────┘  └──────┬──────┘  └─────────────────────────┘  │
-│                          │                                      │
-│  ┌───────────────────────▼──────────────────────────────────┐   │
-│  │              Spring Data JPA + Hibernate                 │   │
-│  └───────────────────────┬──────────────────────────────────┘   │
-└──────────────────────────┼──────────────────────────────────────┘
-                           │ JDBC
-┌──────────────────────────▼──────────────────────────────────────┐
-│                      PostgreSQL 16                              │
-│           Projects │ Epics │ Stories │ Tasks │ Chat             │
-└─────────────────────────────────────────────────────────────────┘
-```
+**PlanAI** was built with a specific goal: **To demonstrate advanced Backend Engineering capabilities and the practical application of AI Agents in software development.**
+
+As a **Backend Engineer**, my primary focus was on designing a scalable architecture, implementing complex business logic, and integrating Large Language Models (LLMs) to solve real-world problems.
+
+### 🤖 The "AI-Assisted Frontend" Approach
+While I possess full-stack understanding, I leveraged **AI Agents** (specifically `PlanAI Agent`) to build the majority of the **Angular 21** frontend. 
+*   **Why?** To demonstrate that as a backend specialist, I can effectively orchestrate AI tools to deliver a polished, modern, and responsive UI without getting bogged down in pixel-pushing.
+*   **Result:** A fully functional, aesthetically pleasing, and accessible frontend that serves as the perfect interface for my robust backend logic.
 
 ---
 
-## Data Model
+## 🚀 Key Features
 
-PlanAI uses a hierarchical structure to organize project plans:
+*   **Conversational Interface**: Natural language dialogue with Llama 3.3 to brainstorm project requirements.
+*   **Intelligent Parsing**: The backend analyzes chat context to automatically extract and structure:
+    *   **Epics** (High-level goals)
+    *   **User Stories** (Specific requirements)
+    *   **Tasks** (Actionable items)
+*   **Hierarchical Data Management**: Complex relational modeling (One-to-Many recursions) managed via JPA/Hibernate.
+*   **Live Plan Updates**: Chat and Plan views are synchronized; changes in the plan are reflected in the chat context and vice-versa.
+*   **Responsive Kanban/List Views**: View progress across different project hierarchies.
 
-```
-┌─────────────────┐
-│    PROJECTS     │  Container for a complete plan
-├─────────────────┤
-│ id (UUID)       │
-│ name            │
-│ description     │
-│ created_at      │
-│ updated_at      │
-└────────┬────────┘
-         │ 1:N
-┌────────▼────────┐
-│     EPICS       │  High-level features or themes
-├─────────────────┤
-│ id, project_id  │
-│ title           │
-│ description     │
-│ priority        │  HIGH, MEDIUM, LOW
-│ status          │  TODO, IN_PROGRESS, DONE
-│ order           │
-└────────┬────────┘
-         │ 1:N
-┌────────▼────────┐
-│  USER STORIES   │  "As a [role], I want [goal], so that [benefit]"
-├─────────────────┤
-│ id, epic_id     │
-│ title           │
-│ as_a            │  Role (e.g., "registered user")
-│ i_want          │  Goal (e.g., "to reset my password")
-│ so_that         │  Benefit (e.g., "I can recover my account")
-│ priority        │
-│ status          │
-│ order           │
-└────────┬────────┘
-         │ 1:N
-┌────────▼────────┐
-│     TASKS       │  Specific implementation work
-├─────────────────┤
-│ id, story_id    │
-│ title           │
-│ description     │
-│ status          │  TODO, IN_PROGRESS, DONE
-│ estimated_hours │
-│ order           │
-└─────────────────┘
+---
 
-┌─────────────────┐
-│ CONVERSATIONS   │  Chat sessions with AI
-├─────────────────┤
-│ id, project_id  │
-│ created_at      │
-└────────┬────────┘
-         │ 1:N
-┌────────▼────────┐
-│    MESSAGES     │  Individual chat messages
-├─────────────────┤
-│ id, conv_id     │
-│ role            │  USER, ASSISTANT, SYSTEM
-│ content         │
-│ created_at      │
-└─────────────────┘
+## 🏗️ Architecture & Tech Stack
+
+The system follows a clean, layered architecture ensuring separation of concerns and maintainability.
+
+### 🔙 Backend (Core Focus)
+*   **Language**: Java 21 (leveraging Records, Pattern Matching, Virtual Threads).
+*   **Framework**: Spring Boot 3.3.4.
+*   **AI Integration**: **Spring AI** connecting to **Groq Cloud** (running Llama 3.3 for sub-second inference).
+*   **Database**: PostgreSQL 16 with optimized indexing for hierarchical queries.
+*   **ORM**: Spring Data JPA + Hibernate.
+*   **Validation**: Jakarta Validation constraints for robust data integrity.
+*   **Documentation**: SpringDoc OpenAPI (Swagger UI).
+*   **Mapping**: ModelMapper for clean Entity-DTO separation.
+
+### 🔜 Frontend (AI-Generated & Polished)
+*   **Framework**: Angular 21 (Latest).
+*   **State Management**: Angular Signals (Reactive primitives).
+*   **Styling**: Tailwind CSS with custom Design Tokens.
+*   **Key Components**: Standalone Components, View Transitions API.
+
+### ⚙️ DevOps & Tools
+*   **Containerization**: Docker & Docker Compose for one-command startup.
+*   **Build Systems**: Maven (Backend), NPM (Frontend).
+
+---
+
+## 🧩 System Design
+
+```mermaid
+graph TD
+    User[User] -->|HTTPS/REST| FE[Angular Frontend]
+    FE -->|API Calls| BE[Spring Boot Backend]
+    
+    subgraph "Backend Services"
+        Controller[REST Controllers] --> Service[Business Services]
+        Service --> Repo[JPA Repositories]
+        Service --> AI[Spring AI Service]
+    end
+    
+    subgraph "Infrastructure"
+        DB[(PostgreSQL)]
+        Groq[Groq API (Llama 3.3)]
+    end
+    
+    Repo -->|JDBC| DB
+    AI -->|JSON| Groq
 ```
 
 ---
 
-## Tech Stack
+## 💾 Data Model
 
-### Backend
-| Technology | Purpose |
-|------------|---------|
-| **Java 21** | Core language with modern features |
-| **Spring Boot 3.3.4** | Framework with auto-configuration |
-| **Spring AI** | AI integration with Groq (Llama 3.3) |
-| **Spring Data JPA** | Database access layer |
-| **PostgreSQL 16** | Relational database |
-| **Lombok** | Boilerplate reduction |
-| **ModelMapper** | DTO mapping |
-| **SpringDoc OpenAPI** | API documentation |
+The application handles a strict hierarchy to enforce project management best practices:
 
-### Frontend
-| Technology | Purpose |
-|------------|---------|
-| **Angular 21** | Standalone components, Signals |
-| **TypeScript 5.9** | Type-safe development |
-| **RxJS** | Reactive programming |
-| **SCSS** | Component-scoped styles |
+1.  **Project**: The root container.
+2.  **Epic**: Large bodies of work (e.g., "Authentication Module").
+3.  **User Story**: Feature requirements (e.g., "As a user, I want to login...").
+4.  **Task**: Technical implementation steps (e.g., "Create Login API").
 
-### Infrastructure
-| Technology | Purpose |
-|------------|---------|
-| **Docker** | Containerization |
-| **Docker Compose** | Service orchestration |
-| **Maven** | Build tool |
+All entities track `status` (TODO, IN_PROGRESS, DONE) and `priority` (HIGH, MEDIUM, LOW).
 
 ---
 
-## Project Structure
+## 🛠️ Getting Started
 
-```
-PlanAI/
-├── backend/
-│   ├── src/main/java/com/planai/
-│   │   ├── config/          # Configuration (CORS, Spring AI, OpenAPI)
-│   │   ├── controller/      # REST API endpoints
-│   │   ├── service/         # Business logic + AI service
-│   │   ├── repository/      # Data access layer
-│   │   ├── model/           # JPA entities (Project, Epic, Story, Task)
-│   │   ├── dto/             # Request/Response DTOs
-│   │   └── exception/       # Global exception handling
-│   ├── src/main/resources/
-│   │   ├── prompts/         # AI prompt templates
-│   │   └── application.yml  # Configuration
-│   └── Dockerfile
-├── frontend/
-│   ├── src/app/
-│   │   ├── core/            # Services, models, interceptors
-│   │   ├── features/
-│   │   │   ├── chat/        # Chat interface components
-│   │   │   ├── projects/    # Project list/detail components
-│   │   │   └── plans/       # Plan viewer components
-│   │   └── shared/          # Reusable UI components
-│   └── Dockerfile
-├── docs/
-│   └── JUNIOR_IMPLEMENTATION_GUIDE.md
-└── docker-compose.yml
-```
-
----
-
-## Getting Started
+Follow these steps to run the application locally.
 
 ### Prerequisites
-
-- Docker & Docker Compose
-- Groq Cloud API Key ([Get one here](https://console.groq.com/keys))
+*   Docker & Docker Compose installed.
+*   A **Groq API Key** (Free tier available at [console.groq.com](https://console.groq.com)).
 
 ### Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/NachoOsella/PlanAI.git
-cd PlanAI
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/NachoOsella/PlanAI.git
+    cd PlanAI
+    ```
 
-# Create environment file
-echo "GROQ_API_KEY=your-api-key-here" > .env
+2.  **Configure Environment**
+    Create a `.env` file in the root directory:
+    ```bash
+    echo "GROQ_API_KEY=gsk_your_actual_key_here" > .env
+    ```
 
-# Start all services
-docker-compose up --build
-```
+3.  **Launch with Docker**
+    ```bash
+    docker-compose up --build
+    ```
 
-### Access Points
-
-| Service | URL | Description |
-|---------|-----|-------------|
-| Frontend | http://localhost:4200 | Angular application |
-| Backend API | http://localhost:8080/api | REST endpoints |
-| Swagger UI | http://localhost:8080/swagger-ui.html | API documentation |
-| Health Check | http://localhost:8080/api/health | Service status |
-
----
-
-## API Overview
-
-### Projects
-```
-POST   /api/v1/projects              Create a new project
-GET    /api/v1/projects              List all projects
-GET    /api/v1/projects/{id}         Get project details
-GET    /api/v1/projects/{id}/full    Get project with full plan hierarchy
-PUT    /api/v1/projects/{id}         Update project
-DELETE /api/v1/projects/{id}         Delete project
-```
-
-### Epics
-```
-POST   /api/v1/projects/{id}/epics   Create epic in project
-GET    /api/v1/projects/{id}/epics   List project epics
-GET    /api/v1/epics/{id}            Get epic details
-PUT    /api/v1/epics/{id}            Update epic
-DELETE /api/v1/epics/{id}            Delete epic
-```
-
-### User Stories
-```
-POST   /api/v1/epics/{id}/stories    Create story in epic
-GET    /api/v1/epics/{id}/stories    List epic stories
-GET    /api/v1/stories/{id}          Get story details
-PUT    /api/v1/stories/{id}          Update story
-DELETE /api/v1/stories/{id}          Delete story
-```
-
-### Tasks
-```
-POST   /api/v1/stories/{id}/tasks    Create task in story
-GET    /api/v1/stories/{id}/tasks    List story tasks
-GET    /api/v1/tasks/{id}            Get task details
-PUT    /api/v1/tasks/{id}            Update task
-DELETE /api/v1/tasks/{id}            Delete task
-```
-
-### AI Chat
-```
-POST   /api/v1/projects/{id}/chat    Send message to AI for planning assistance
-GET    /api/v1/projects/{id}/conversations    Get chat history
-```
+4.  **Access the App**
+    *   **Frontend**: [http://localhost:4200](http://localhost:4200)
+    *   **Swagger Documentation**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ---
 
-## Development
+## 👨‍💻 Author
 
-### Running Locally
+**Nacho Osella**  
+*Backend Software Engineer*
 
-```bash
-# Backend only (requires local PostgreSQL)
-cd backend
-./mvnw spring-boot:run
+I specialize in building scalable, high-performance backend systems. This project serves as a sandbox for exploring the intersection of traditional software engineering and the new wave of AI capabilities.
 
-# Frontend only
-cd frontend
-npm install
-npm start
-```
-
-### Useful Commands
-
-```bash
-# View logs
-docker-compose logs -f backend
-docker-compose logs -f frontend
-
-# Rebuild specific service
-docker-compose up --build backend
-
-# Database access
-docker-compose exec db psql -U postgres -d planai_db
-
-# Run tests
-cd backend && ./mvnw test
-cd frontend && npm test
-```
-
----
-
-## Roadmap
-
-- [x] **Sprint 0**: Infrastructure Setup - Docker, project structure, health endpoint
-- [x] **Sprint 1**: Data Layer - Entities (Project, Epic, Story, Task), Repositories, Services
-- [x] **Sprint 2**: AI Integration - Spring AI, chat service, prompt engineering
-- [ ] **Sprint 3**: Frontend - Chat interface, plan viewer, state management
-- [ ] **Sprint 4**: Production - Error handling, validation, UX polish
-
-See [JUNIOR_IMPLEMENTATION_GUIDE.md](docs/JUNIOR_IMPLEMENTATION_GUIDE.md) for detailed implementation steps.
-
----
-
-## Author
-
-**Nacho Osella**
-
-[![GitHub](https://img.shields.io/badge/GitHub-NachoOsella-181717?style=for-the-badge&logo=github)](https://github.com/NachoOsella)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/nachoosella)
+[![GitHub](https://img.shields.io/badge/GitHub-View_Portfolio-181717?style=for-the-badge&logo=github)](https://github.com/NachoOsella)
 
 ---
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-<p align="center">
-  <sub>Built with Spring AI and Groq</sub>
-</p>
+This project is licensed under the MIT License.

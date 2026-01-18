@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../modal/modal.component';
-import { Epic, UserStory, Task, Priority } from '../../../core/models/epic.model';
+import { Epic, UserStory, Task, Priority, Status } from '../../../core/models/epic.model';
 
 export type ItemType = 'epic' | 'story' | 'task';
 
@@ -51,6 +51,7 @@ export class ItemEditModalComponent implements OnInit, AfterViewInit {
   @Output() delete = new EventEmitter<ItemDeleteEvent>();
 
   priorities = Object.values(Priority);
+  statuses = Object.values(Status);
 
   formData: Record<string, any> = {
     title: '',
@@ -65,8 +66,9 @@ export class ItemEditModalComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.data?.item) {
       this.formData = { ...this.data.item };
-      if (this.data.type === 'task') {
-        delete this.formData['status'];
+      // Set default status for tasks if not present
+      if (this.data.type === 'task' && !this.formData['status']) {
+        this.formData['status'] = Status.TODO;
       }
     } else {
         // Reset form for create mode
@@ -77,6 +79,7 @@ export class ItemEditModalComponent implements OnInit, AfterViewInit {
             iWant: '',
             soThat: '',
             priority: 'MEDIUM',
+            status: Status.TODO,
             estimatedHours: null,
         };
     }

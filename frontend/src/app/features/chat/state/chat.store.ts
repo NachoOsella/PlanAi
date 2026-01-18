@@ -94,7 +94,7 @@ export class ChatStore {
         const allMessages = orderedConversations.flatMap((conv) => conv.messages || []);
         const messagesWithIds = this.normalizeMessages(allMessages);
         this._messages.set(this.sortMessages(messagesWithIds));
-      } else if (this._messages().length === 0) {
+      } else {
         this._conversationId.set(null);
         this._messages.set([]);
       }

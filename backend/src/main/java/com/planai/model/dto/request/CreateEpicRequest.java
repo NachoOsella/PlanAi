@@ -1,6 +1,7 @@
 package com.planai.model.dto.request;
 
 import com.planai.model.enums.PriorityEnum;
+import com.planai.model.enums.StatusEnum;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,4 +26,6 @@ public class CreateEpicRequest {
     private String description;
 
     private PriorityEnum priority;
+
+    private StatusEnum status;
 }

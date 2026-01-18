@@ -5,6 +5,7 @@ import {
   signal,
   DestroyRef,
   computed,
+  HostListener,
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule, ViewportScroller } from '@angular/common';
@@ -31,8 +32,27 @@ export class PlanOverviewComponent implements OnInit {
   private viewportScroller = inject(ViewportScroller);
   readonly projectStore = inject(ProjectStore);
 
+  // Sidebar State (for mobile)
+  readonly sidebarOpen = signal(false);
+
   // Modal State
   readonly editModalData = signal<ItemEditData | null>(null);
+
+  // Close sidebar on Escape key
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.sidebarOpen()) {
+      this.closeSidebar();
+    }
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen.update((open) => !open);
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen.set(false);
+  }
 
   // Computed Data
   readonly epics = computed(() => this.projectStore.selectedProject()?.epics ?? []);
@@ -62,6 +82,8 @@ export class PlanOverviewComponent implements OnInit {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    // Close sidebar on mobile after selecting an epic
+    this.closeSidebar();
   }
 
   // Creation

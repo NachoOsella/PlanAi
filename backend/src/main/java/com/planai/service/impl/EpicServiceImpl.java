@@ -16,6 +16,8 @@ import com.planai.repository.EpicRepository;
 import com.planai.repository.ProjectRepository;
 import com.planai.service.EpicService;
 import com.planai.exception.ResourceNotFoundException;
+import com.planai.model.enums.PriorityEnum;
+import com.planai.model.enums.StatusEnum;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,6 +72,15 @@ public class EpicServiceImpl implements EpicService {
 
         EpicEntity epicEntity = epicMapper.toEntity(request);
         epicEntity.setProject(project);
+        
+        // Set defaults for required fields if not provided
+        if (epicEntity.getStatus() == null) {
+            epicEntity.setStatus(StatusEnum.TODO);
+        }
+        if (epicEntity.getPriority() == null) {
+            epicEntity.setPriority(PriorityEnum.MEDIUM);
+        }
+        
         epicEntity = epicRepository.save(epicEntity);
         return epicMapper.toResponse(epicEntity);
     }

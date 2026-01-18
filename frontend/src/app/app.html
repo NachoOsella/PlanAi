@@ -1,9 +1,40 @@
 <div class="flex h-screen w-full bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden">
-  <aside class="w-[280px] bg-[#1a1a1a] flex flex-col h-full border-r border-white/5 shrink-0">
-    <div class="p-6">
+  <!-- Mobile Header -->
+  <div class="lg:hidden fixed top-0 left-0 right-0 h-14 bg-sidebar border-b border-white/5 flex items-center justify-between px-4 z-40">
+    <div class="flex items-center gap-3">
+      <div class="size-8 rounded-lg overflow-hidden shadow-[0_0_10px_rgba(100,103,242,0.3)]">
+        <img src="logo.svg" alt="PlanAI Logo" class="w-full h-full object-cover">
+      </div>
+      <span class="text-white text-sm font-bold">PlanAI</span>
+    </div>
+    <button
+      (click)="toggleSidebar()"
+      class="size-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="material-symbols-outlined text-xl" aria-hidden="true">{{ sidebarOpen() ? 'close' : 'menu' }}</span>
+    </button>
+  </div>
+
+  <!-- Mobile Overlay -->
+  @if (sidebarOpen()) {
+    <div
+      class="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+      (click)="closeSidebar()"
+    ></div>
+  }
+
+  <!-- Sidebar -->
+  <aside
+    class="fixed lg:relative w-[280px] bg-sidebar flex flex-col h-full border-r border-white/5 shrink-0 z-50 transition-transform duration-300 ease-in-out"
+    [class.-translate-x-full]="!sidebarOpen()"
+    [class.translate-x-0]="sidebarOpen()"
+    [class.lg:translate-x-0]="true"
+  >
+    <div class="p-6 pt-4 lg:pt-6">
       <div class="flex items-center gap-3 mb-8">
-        <div class="size-10 rounded-xl bg-gradient-to-tr from-primary to-blue-400 flex items-center justify-center shadow-[0_0_15px_rgba(100,103,242,0.4)]">
-          <span class="material-symbols-outlined text-white text-2xl">auto_awesome</span>
+        <div class="size-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(100,103,242,0.4)]">
+          <img src="logo.svg" alt="PlanAI Logo" class="w-full h-full object-cover">
         </div>
         <div>
           <h1 class="text-white text-lg font-bold leading-tight">PlanAI</h1>
@@ -13,34 +44,37 @@
 
       <div class="p-[1px] rounded-lg bg-gradient-to-r from-primary via-blue-500 to-purple-500 mb-8">
         <button
-          class="w-full bg-[#1a1a1a] hover:bg-[#252525] transition-colors rounded-[7px] py-2.5 px-4 text-white text-sm font-semibold flex items-center justify-center gap-2"
+          class="w-full bg-sidebar hover:bg-sidebar-hover transition-colors rounded-[7px] py-2.5 px-4 text-white text-sm font-semibold flex items-center justify-center gap-2"
           [routerLink]="['/projects/new']"
+          (click)="closeSidebar()"
         >
-          <span class="material-symbols-outlined text-lg">add</span>
+          <span class="material-symbols-outlined text-lg" aria-hidden="true">add</span>
           New Project
         </button>
       </div>
 
       <nav class="space-y-1">
         <p class="text-slate-500 text-[10px] uppercase tracking-widest font-bold px-3 mb-2">Navigation</p>
-        <div
+        <a
           class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-white/5 cursor-pointer transition-all"
           [routerLink]="['/projects']"
           routerLinkActive="bg-white/5 !text-white"
           [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeSidebar()"
         >
-          <span class="material-symbols-outlined text-xl">grid_view</span>
+          <span class="material-symbols-outlined text-xl" aria-hidden="true">grid_view</span>
           <span class="text-sm font-medium">Dashboard</span>
-        </div>
+        </a>
         @if (projectStore.selectedProject()) {
-          <div
+          <a
             class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-white/5 cursor-pointer transition-all"
             [routerLink]="['/projects', projectStore.selectedProject()?.id, 'overview']"
             routerLinkActive="bg-white/5 !text-white"
+            (click)="closeSidebar()"
           >
-            <span class="material-symbols-outlined text-xl">account_tree</span>
+            <span class="material-symbols-outlined text-xl" aria-hidden="true">account_tree</span>
             <span class="text-sm font-medium">Plan Overview</span>
-          </div>
+          </a>
         }
       </nav>
     </div>
@@ -57,7 +91,7 @@
           <a
             class="block"
             [routerLink]="['/projects', project.id]"
-            (click)="closeMenu()"
+            (click)="closeMenu(); closeSidebar()"
           >
             <div class="flex justify-between items-start mb-2">
               <h3 class="text-sm font-semibold truncate pr-2" [class.text-primary]="rla.isActive" [class.text-slate-300]="!rla.isActive">
@@ -70,33 +104,37 @@
             </div>
           </a>
 
-          <div class="absolute right-3 top-3" data-project-menu (click)="$event.stopPropagation()">            <button
+          <div class="absolute right-3 top-3" data-project-menu (click)="$event.stopPropagation()">
+            <button
               class="list-none cursor-pointer p-1 rounded-md hover:bg-white/10 transition-colors outline-none"
               (click)="toggleMenu(project.id); $event.preventDefault(); $event.stopPropagation()"
               data-project-menu
+              aria-label="Project options"
             >
-              <span class="material-symbols-outlined text-slate-500 text-xs hover:text-white transition-colors">more_horiz</span>
+              <span class="material-symbols-outlined text-slate-500 text-xs hover:text-white transition-colors" aria-hidden="true">more_horiz</span>
             </button>
 
             @if (openMenuId() === project.id) {
               <div
-                class="absolute right-0 top-full mt-1 w-36 bg-[#252525] border border-white/10 rounded-lg shadow-xl transition-all z-20 overflow-hidden"
+                class="absolute right-0 top-full mt-1 w-36 bg-sidebar-hover border border-white/10 rounded-lg shadow-xl transition-all z-20 overflow-hidden"
                 (click)="$event.stopPropagation()"
                 data-project-menu
+                role="menu"
+                aria-label="Project actions"
               >
                 <button
                   class="w-full px-3 py-2 text-left text-xs text-slate-300 hover:bg-white/5 flex items-center gap-2 transition-colors"
                   (click)="openEditProject(project); $event.preventDefault(); $event.stopPropagation()"
                 >
-                  <span class="material-symbols-outlined text-sm">edit</span>
+                  <span class="material-symbols-outlined text-sm" aria-hidden="true">edit</span>
                   Edit Project
                 </button>
-                <div class="h-px bg-white/5 mx-2"></div>
+                <div class="h-px bg-white/5 mx-2" role="separator"></div>
                 <button
                   class="w-full px-3 py-2 text-left text-xs text-red-400 hover:bg-red-400/10 flex items-center gap-2 transition-colors"
                   (click)="openDeleteProject(project); $event.preventDefault(); $event.stopPropagation()"
                 >
-                  <span class="material-symbols-outlined text-sm">delete</span>
+                  <span class="material-symbols-outlined text-sm" aria-hidden="true">delete</span>
                   Delete Project
                 </button>
               </div>
@@ -111,7 +149,7 @@
     </div>
   </aside>
 
-  <main class="flex-1 flex flex-col bg-background-light dark:bg-background-dark min-w-0 h-full">
+  <main class="flex-1 flex flex-col bg-background-light dark:bg-background-dark min-w-0 h-full pt-14 lg:pt-0">
     <router-outlet></router-outlet>
   </main>
 </div>

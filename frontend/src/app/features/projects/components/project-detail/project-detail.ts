@@ -33,6 +33,7 @@ export class ProjectDetailComponent implements OnInit {
   readonly chatStore = inject(ChatStore);
 
   readonly editModalData = signal<ItemEditData | null>(null);
+  readonly activeView = signal<'chat' | 'plan'>('chat');
 
   ngOnInit(): void {
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
@@ -41,6 +42,10 @@ export class ProjectDetailComponent implements OnInit {
         this.projectStore.loadProjectDetail(id);
       }
     });
+  }
+
+  setActiveView(view: 'chat' | 'plan'): void {
+    this.activeView.set(view);
   }
 
   async onRefreshPlan(): Promise<void> {
@@ -70,6 +75,7 @@ export class ProjectDetailComponent implements OnInit {
           title: (payload as Epic).title,
           description: (payload as Epic).description,
           priority: (payload as Epic).priority,
+          status: (payload as Epic).status,
         });
         break;
       case 'story':
@@ -79,6 +85,7 @@ export class ProjectDetailComponent implements OnInit {
           iWant: (payload as UserStory).iWant,
           soThat: (payload as UserStory).soThat,
           priority: (payload as UserStory).priority,
+          status: (payload as UserStory).status,
         });
         break;
       case 'task':
@@ -86,6 +93,7 @@ export class ProjectDetailComponent implements OnInit {
           title: (payload as Task).title,
           description: (payload as Task).description,
           estimatedHours: (payload as Task).estimatedHours,
+          status: (payload as Task).status,
         });
         break;
     }

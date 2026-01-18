@@ -11,10 +11,11 @@
   @if (mode === 'edit') {
     <div class="space-y-5">
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <label for="project-name" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           Project Name
         </label>
         <input
+          id="project-name"
           type="text"
           [(ngModel)]="formData['name']"
           class="w-full h-12 bg-slate-50 dark:bg-slate-900 border-none rounded-xl px-4 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white"
@@ -23,10 +24,11 @@
       </div>
 
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <label for="project-description" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           Description
         </label>
         <textarea
+          id="project-description"
           [(ngModel)]="formData['description']"
           rows="4"
           class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-xl px-4 py-3 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white resize-none"
@@ -35,7 +37,7 @@
       </div>
     </div>
   } @else {
-    <div class="space-y-3">
+    <div class="space-y-3" role="alert">
       <p class="text-sm text-slate-600 dark:text-slate-300">
         You are about to delete <span class="font-semibold text-slate-900 dark:text-white">{{ project?.name }}</span>.
       </p>

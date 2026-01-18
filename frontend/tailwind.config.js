@@ -10,6 +10,11 @@ module.exports = {
         "primary": "#6467f2",
         "background-light": "#f6f6f8",
         "background-dark": "#101122",
+        // Semantic UI colors
+        "sidebar": "#1a1a1a",
+        "sidebar-hover": "#252525",
+        "surface": "#fcfcfd",
+        "surface-dark": "#1e1e2e",
       },
       fontFamily: {
         "display": ["Inter", "sans-serif"]

@@ -8,10 +8,11 @@
   <div class="space-y-5">
     <!-- Title Field (all types) -->
     <div class="space-y-2">
-      <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+      <label for="item-title" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
         Title
       </label>
       <input
+        id="item-title"
         #titleInput
         type="text"
         [(ngModel)]="formData['title']"
@@ -24,10 +25,11 @@
     <!-- Description Field (epic & task) -->
     @if (data?.type === 'epic' || data?.type === 'task') {
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <label for="item-description" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           Description
         </label>
         <textarea
+          id="item-description"
           [(ngModel)]="formData['description']"
           rows="3"
           class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-xl px-4 py-3 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white resize-none"
@@ -39,10 +41,11 @@
     <!-- User Story specific fields -->
     @if (data?.type === 'story') {
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <label for="story-as-a" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           As a...
         </label>
         <input
+          id="story-as-a"
           type="text"
           [(ngModel)]="formData['asA']"
           class="w-full h-12 bg-slate-50 dark:bg-slate-900 border-none rounded-xl px-4 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white"
@@ -50,10 +53,11 @@
         />
       </div>
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <label for="story-i-want" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           I want to...
         </label>
         <input
+          id="story-i-want"
           type="text"
           [(ngModel)]="formData['iWant']"
           class="w-full h-12 bg-slate-50 dark:bg-slate-900 border-none rounded-xl px-4 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white"
@@ -61,10 +65,11 @@
         />
       </div>
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <label for="story-so-that" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           So that...
         </label>
         <input
+          id="story-so-that"
           type="text"
           [(ngModel)]="formData['soThat']"
           class="w-full h-12 bg-slate-50 dark:bg-slate-900 border-none rounded-xl px-4 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary transition-all text-sm font-medium dark:text-white"
@@ -75,35 +80,39 @@
 
     <!-- Priority (epic & story) -->
     @if (data?.type === 'epic' || data?.type === 'story') {
-      <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+      <fieldset class="space-y-2">
+        <legend class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           Priority
-        </label>
-        <div class="flex gap-2">
+        </legend>
+        <div class="flex gap-2" role="radiogroup" aria-label="Select priority">
           @for (p of priorities; track p) {
             <button
               type="button"
               (click)="formData['priority'] = p"
               class="flex-1 h-10 rounded-xl text-xs font-bold uppercase transition-all"
-              [class.bg-red-100.text-red-600.ring-2.ring-red-500]="p === 'HIGH' && formData['priority'] === p"
-              [class.bg-yellow-100.text-yellow-600.ring-2.ring-yellow-500]="p === 'MEDIUM' && formData['priority'] === p"
-              [class.bg-green-100.text-green-600.ring-2.ring-green-500]="p === 'LOW' && formData['priority'] === p"
-              [class.bg-slate-100.text-slate-500.dark:bg-slate-800.dark:text-slate-400]="formData['priority'] !== p"
+              [ngClass]="{
+                'bg-red-100 text-red-600 ring-2 ring-red-500': p === 'HIGH' && formData['priority'] === p,
+                'bg-yellow-100 text-yellow-600 ring-2 ring-yellow-500': p === 'MEDIUM' && formData['priority'] === p,
+                'bg-green-100 text-green-600 ring-2 ring-green-500': p === 'LOW' && formData['priority'] === p,
+                'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400': formData['priority'] !== p
+              }"
+              [attr.aria-pressed]="formData['priority'] === p"
             >
               {{ p }}
             </button>
           }
         </div>
-      </div>
+      </fieldset>
     }
 
     <!-- Estimated Hours (task only) -->
     @if (data?.type === 'task') {
       <div class="space-y-2">
-        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <label for="task-estimated-hours" class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           Estimated Hours
         </label>
         <input
+          id="task-estimated-hours"
           type="number"
           [(ngModel)]="formData['estimatedHours']"
           min="0"
@@ -112,6 +121,31 @@
           placeholder="e.g., 4"
         />
       </div>
+
+      <!-- Status (task only) -->
+      <fieldset class="space-y-2">
+        <legend class="block text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+          Status
+        </legend>
+        <div class="flex gap-2" role="radiogroup" aria-label="Select status">
+          @for (s of statuses; track s) {
+            <button
+              type="button"
+              (click)="formData['status'] = s"
+              class="flex-1 h-10 rounded-xl text-xs font-bold uppercase transition-all"
+              [ngClass]="{
+                'bg-slate-200 text-slate-700 ring-2 ring-slate-400 dark:bg-slate-600 dark:text-slate-200': s === 'TODO' && formData['status'] === s,
+                'bg-blue-100 text-blue-600 ring-2 ring-blue-500': s === 'IN_PROGRESS' && formData['status'] === s,
+                'bg-green-100 text-green-600 ring-2 ring-green-500': s === 'DONE' && formData['status'] === s,
+                'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400': formData['status'] !== s
+              }"
+              [attr.aria-pressed]="formData['status'] === s"
+            >
+              {{ s === 'IN_PROGRESS' ? 'In Progress' : s }}
+            </button>
+          }
+        </div>
+      </fieldset>
     }
   </div>
 </app-modal>

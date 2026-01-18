@@ -1,68 +1,109 @@
-<header class="h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 bg-white dark:bg-background-dark/50 backdrop-blur-md z-10">
-  <div class="flex items-center gap-2">
-    <a class="text-slate-400 text-sm font-medium hover:text-primary transition-colors" [routerLink]="['/projects']">Projects</a>
-    <span class="text-slate-300 text-sm material-symbols-outlined scale-75">chevron_right</span>
-    <span class="text-slate-900 dark:text-white text-sm font-semibold">{{ projectStore.selectedProject()?.name || 'Loading...' }}</span>
+<header class="h-14 lg:h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8 bg-white dark:bg-background-dark/50 backdrop-blur-md z-10">
+  <div class="flex items-center gap-2 min-w-0">
+    <a class="text-slate-400 text-sm font-medium hover:text-primary transition-colors hidden sm:block" [routerLink]="['/projects']">Projects</a>
+    <span class="text-slate-300 text-sm material-symbols-outlined scale-75 hidden sm:block" aria-hidden="true">chevron_right</span>
+    <span class="text-slate-900 dark:text-white text-sm font-semibold truncate">{{ projectStore.selectedProject()?.name || 'Loading...' }}</span>
   </div>
   <div class="flex items-center gap-2">
     <button
       (click)="onRefreshPlan()"
-      class="h-9 px-3 rounded-xl flex items-center gap-2 text-slate-600 hover:text-primary hover:bg-primary/10 transition-all border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+      class="h-9 px-2 lg:px-3 rounded-xl flex items-center gap-2 text-slate-600 hover:text-primary hover:bg-primary/10 transition-all border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
       title="Update the live plan from the latest AI conversation"
+      aria-label="Update plan from AI conversation"
     >
-      <span class="material-symbols-outlined text-lg">autorenew</span>
-      <span class="text-xs font-semibold">Update Plan</span>
+      <span class="material-symbols-outlined text-lg" aria-hidden="true">autorenew</span>
+      <span class="text-xs font-semibold hidden sm:inline">Update Plan</span>
     </button>
     <a 
       [routerLink]="['/projects', projectStore.selectedProject()?.id, 'overview']"
-      class="h-9 px-3 rounded-xl flex items-center gap-2 text-slate-600 hover:text-primary hover:bg-primary/10 transition-all border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+      class="h-9 px-2 lg:px-3 rounded-xl flex items-center gap-2 text-slate-600 hover:text-primary hover:bg-primary/10 transition-all border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
     >
-      <span class="material-symbols-outlined text-lg">view_column</span>
-      <span class="text-xs font-semibold">Plan Overview</span>
+      <span class="material-symbols-outlined text-lg" aria-hidden="true">view_column</span>
+      <span class="text-xs font-semibold hidden sm:inline">Plan Overview</span>
     </a>
   </div>
 </header>
 
+<!-- Mobile View Toggle -->
+<div class="lg:hidden flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark/50">
+  <button
+    (click)="setActiveView('chat')"
+    class="flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2 transition-all"
+    [class.text-primary]="activeView() === 'chat'"
+    [class.border-b-2]="activeView() === 'chat'"
+    [class.border-primary]="activeView() === 'chat'"
+    [class.text-slate-500]="activeView() !== 'chat'"
+  >
+    <span class="material-symbols-outlined text-lg" aria-hidden="true">chat</span>
+    Chat
+  </button>
+  <button
+    (click)="setActiveView('plan')"
+    class="flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-2 transition-all"
+    [class.text-primary]="activeView() === 'plan'"
+    [class.border-b-2]="activeView() === 'plan'"
+    [class.border-primary]="activeView() === 'plan'"
+    [class.text-slate-500]="activeView() !== 'plan'"
+  >
+    <span class="material-symbols-outlined text-lg" aria-hidden="true">account_tree</span>
+    Plan
+  </button>
+</div>
+
 <div class="flex-1 flex overflow-hidden">
   <!-- Left Side: AI Chat -->
-  <div class="w-1/2 flex flex-col border-r border-slate-200 dark:border-slate-800 relative bg-[#fcfcfd] dark:bg-background-dark/30">
+  <div 
+    class="w-full lg:w-1/2 flex flex-col border-r border-slate-200 dark:border-slate-800 relative bg-surface dark:bg-background-dark/30"
+    [class.hidden]="activeView() !== 'chat'"
+    [class.lg:flex]="true"
+  >
     <app-chat-panel [projectId]="projectStore.selectedProject()?.id?.toString() || null" />
   </div>
 
   <!-- Right Side: Plan Viewer -->
-  <div class="w-1/2 flex flex-col bg-slate-50 dark:bg-background-dark/10">
-    <div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
+  <div 
+    class="w-full lg:w-1/2 flex flex-col bg-slate-50 dark:bg-background-dark/10"
+    [class.hidden]="activeView() !== 'plan'"
+    [class.lg:flex]="true"
+  >
+    <div class="p-4 lg:p-6 flex-1 overflow-y-auto custom-scrollbar">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
-          <span class="material-symbols-outlined text-primary">account_tree</span>
+          <span class="material-symbols-outlined text-primary" aria-hidden="true">account_tree</span>
           Live Plan Structure
         </h2>
       </div>
 
       <div class="space-y-6">
         @for (epic of projectStore.selectedProject()?.epics ?? []; track epic.id) {
-          <div 
-            class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group"
+          <article 
+            class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 lg:p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group"
             (click)="openEditModal('epic', epic)"
+            (keydown.enter)="openEditModal('epic', epic)"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="'Edit epic: ' + epic.title"
           >
             <div class="flex justify-between items-start mb-4">
-              <div>
-                <div class="flex items-center gap-2 mb-1">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
                   <span class="px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold">EPIC</span>
-                  <h3 class="font-bold text-slate-800 dark:text-white group-hover:text-primary transition-colors">{{ epic.title }}</h3>
+                  <h3 class="font-bold text-slate-800 dark:text-white group-hover:text-primary transition-colors truncate">{{ epic.title }}</h3>
                 </div>
-                <p class="text-xs text-slate-500">{{ epic.description }}</p>
+                <p class="text-xs text-slate-500 line-clamp-2">{{ epic.description }}</p>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 shrink-0 ml-2">
                 <span 
                   class="px-2 py-0.5 rounded text-[10px] font-bold"
-                  [class.bg-red-100.text-red-600]="epic.priority === 'HIGH'"
-                  [class.bg-yellow-100.text-yellow-600]="epic.priority === 'MEDIUM'"
-                  [class.bg-green-100.text-green-600]="epic.priority === 'LOW'"
+                  [ngClass]="{
+                    'bg-red-100 text-red-600': epic.priority === 'HIGH',
+                    'bg-yellow-100 text-yellow-600': epic.priority === 'MEDIUM',
+                    'bg-green-100 text-green-600': epic.priority === 'LOW'
+                  }"
                 >
                   {{ epic.priority }}
                 </span>
-                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">edit</span>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors" aria-hidden="true">edit</span>
               </div>
             </div>
             <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full mb-6 overflow-hidden">
@@ -72,61 +113,67 @@
             <div class="space-y-4">
               @for (story of epic.stories; track story.id) {
                 <div class="space-y-2" (click)="$event.stopPropagation()">
-                  <div 
-                    class="flex items-center gap-3 group/story p-2 -mx-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                  <button 
+                    class="w-full flex items-center gap-3 group/story p-2 -mx-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors text-left"
                     (click)="openEditModal('story', story)"
+                    [attr.aria-label]="'Edit story: ' + story.title"
                   >
-                    <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1">article</span>
-                    <p class="text-sm font-semibold text-slate-800 dark:text-white flex-1 group-hover/story:text-primary transition-colors">{{ story.title }}</p>
+                    <span class="material-symbols-outlined text-primary text-lg shrink-0" style="font-variation-settings: 'FILL' 1" aria-hidden="true">article</span>
+                    <p class="text-sm font-semibold text-slate-800 dark:text-white flex-1 group-hover/story:text-primary transition-colors truncate">{{ story.title }}</p>
                     <span 
-                      class="px-2 py-0.5 rounded text-[10px] font-bold"
-                      [class.bg-red-100.text-red-600]="story.priority === 'HIGH'"
-                      [class.bg-yellow-100.text-yellow-600]="story.priority === 'MEDIUM'"
-                      [class.bg-green-100.text-green-600]="story.priority === 'LOW'"
+                      class="px-2 py-0.5 rounded text-[10px] font-bold shrink-0"
+                      [ngClass]="{
+                        'bg-red-100 text-red-600': story.priority === 'HIGH',
+                        'bg-yellow-100 text-yellow-600': story.priority === 'MEDIUM',
+                        'bg-green-100 text-green-600': story.priority === 'LOW'
+                      }"
                     >
                       {{ story.priority }}
                     </span>
-                    <span class="material-symbols-outlined text-slate-300 group-hover/story:text-primary transition-colors text-sm">edit</span>
-                  </div>
+                    <span class="material-symbols-outlined text-slate-300 group-hover/story:text-primary transition-colors text-sm shrink-0" aria-hidden="true">edit</span>
+                  </button>
                   
                   <!-- Tasks -->
-                  <div class="ml-8 space-y-1 border-l-2 border-slate-100 dark:border-slate-700 pl-4">
+                  <div class="ml-4 lg:ml-8 space-y-1 border-l-2 border-slate-100 dark:border-slate-700 pl-3 lg:pl-4">
                     @for (task of story.tasks; track task.id) {
-                      <div 
-                        class="flex items-center gap-2 group/task p-1.5 -mx-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors"
+                      <button 
+                        class="w-full flex items-center gap-2 group/task p-1.5 -mx-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors text-left"
                         (click)="openEditModal('task', task); $event.stopPropagation()"
+                        [attr.aria-label]="'Edit task: ' + task.title"
                       >
-                        <span class="material-symbols-outlined text-slate-400 text-base" [class.text-green-500]="task.status === 'DONE'">
+                        <span class="material-symbols-outlined text-slate-400 text-base shrink-0" [class.text-green-500]="task.status === 'DONE'" aria-hidden="true">
                           {{ task.status === 'DONE' ? 'check_circle' : 'radio_button_unchecked' }}
                         </span>
-                        <p class="text-xs text-slate-600 dark:text-slate-400 flex-1 group-hover/task:text-primary transition-colors" [class.line-through]="task.status === 'DONE'">{{ task.title }}</p>
-                        <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded"
-                          [class.bg-green-100.text-green-600]="task.status === 'DONE'"
-                          [class.bg-blue-100.text-blue-600]="task.status === 'IN_PROGRESS'"
-                          [class.bg-slate-100.text-slate-500]="task.status === 'TODO'"
+                        <p class="text-xs text-slate-600 dark:text-slate-400 flex-1 group-hover/task:text-primary transition-colors truncate" [class.line-through]="task.status === 'DONE'">{{ task.title }}</p>
+                        <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0"
+                          [ngClass]="{
+                            'bg-green-100 text-green-600': task.status === 'DONE',
+                            'bg-blue-100 text-blue-600': task.status === 'IN_PROGRESS',
+                            'bg-slate-100 text-slate-500': task.status === 'TODO'
+                          }"
                         >
                           {{ task.status === 'IN_PROGRESS' ? 'WIP' : task.status }}
                         </span>
-                      </div>
+                      </button>
                     }
                   </div>
                 </div>
               }
             </div>
-          </div>
+          </article>
         } @empty {
           <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-8">
-            <div class="flex flex-col items-center justify-center text-slate-400 gap-2 cursor-pointer hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-3xl">add_circle</span>
-              <span class="text-sm font-medium">No epics defined yet. Start chat to generate them.</span>
+            <div class="flex flex-col items-center justify-center text-slate-400 gap-2">
+              <span class="material-symbols-outlined text-3xl" aria-hidden="true">add_circle</span>
+              <span class="text-sm font-medium text-center">No epics defined yet. Start chat to generate them.</span>
             </div>
           </div>
         }
 
         @if (chatStore.sending()) {
-          <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-5 animate-pulse">
+          <div class="bg-white/50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-5 animate-pulse" aria-live="polite">
             <div class="flex items-center justify-center h-20 text-slate-400 gap-2">
-              <span class="material-symbols-outlined animate-spin">sync</span>
+              <span class="material-symbols-outlined animate-spin" aria-hidden="true">sync</span>
               <span class="text-sm font-medium">Drafting next epic based on conversation...</span>
             </div>
           </div>

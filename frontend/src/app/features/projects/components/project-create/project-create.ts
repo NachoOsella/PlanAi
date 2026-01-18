@@ -1,11 +1,12 @@
 import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ProjectStore } from '../../state/project.store';
 
 @Component({
   selector: 'app-project-create',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   templateUrl: './project-create.html',
   styleUrl: './project-create.scss',
 })

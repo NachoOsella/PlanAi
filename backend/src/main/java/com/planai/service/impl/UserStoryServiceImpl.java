@@ -11,6 +11,8 @@ import com.planai.model.dto.request.CreateStoryRequest;
 import com.planai.model.dto.response.UserStoryResponse;
 import com.planai.model.entity.EpicEntity;
 import com.planai.model.entity.UserStoryEntity;
+import com.planai.model.enums.PriorityEnum;
+import com.planai.model.enums.StatusEnum;
 import com.planai.repository.EpicRepository;
 import com.planai.repository.UserStoryRepository;
 import com.planai.service.UserStoryService;
@@ -65,6 +67,15 @@ public class UserStoryServiceImpl implements UserStoryService {
                 epicRepository.findById(epicId).orElseThrow(() -> new ResourceNotFoundException("Epic", epicId));
         UserStoryEntity storyEntity = userStoryMapper.toEntity(request);
         storyEntity.setEpic(epicEntity);
+        
+        // Set defaults for required fields if not provided
+        if (storyEntity.getStatus() == null) {
+            storyEntity.setStatus(StatusEnum.TODO);
+        }
+        if (storyEntity.getPriority() == null) {
+            storyEntity.setPriority(PriorityEnum.MEDIUM);
+        }
+        
         UserStoryEntity savededEntity = userStoryRepository.save(storyEntity);
         return userStoryMapper.toResponse(savededEntity);
     }

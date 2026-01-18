@@ -2,6 +2,7 @@ package com.planai.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.planai.model.enums.PriorityEnum;
+import com.planai.model.enums.StatusEnum;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -30,4 +31,6 @@ public class CreateStoryRequest {
     private String soThat;
 
     private PriorityEnum priority;
+
+    private StatusEnum status;
 }

@@ -1,5 +1,7 @@
 package com.planai.model.dto.request;
 
+import com.planai.model.enums.StatusEnum;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +22,6 @@ public class CreateTaskRequest {
     private String description;
 
     private Integer estimatedHours;
+
+    private StatusEnum status;
 }
