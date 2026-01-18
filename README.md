@@ -25,7 +25,7 @@
 
 <!-- REPLACE THE LINK BELOW WITH YOUR VIDEO URL/GIF -->
 <div align="center">
-  <img src="https://via.placeholder.com/800x450.png?text=PlanAI+Demo+Video+Placeholder" alt="PlanAI Demo" width="100%">
+  <video src="docs/recording.mp4" controls width="100%"></video>
   <p><em>Watch how PlanAI turns a simple idea into a structured project plan in seconds.</em></p>
 </div>
 
@@ -98,7 +98,7 @@ graph TD
     
     subgraph "Infrastructure"
         DB[(PostgreSQL)]
-        Groq[Groq API (Llama 3.3)]
+        Groq["Groq API (Llama 3.3)"]
     end
     
     Repo -->|JDBC| DB
