@@ -25,7 +25,9 @@
 
 <!-- REPLACE THE LINK BELOW WITH YOUR VIDEO URL/GIF -->
 <div align="center">
-  <video src="docs/recording.mp4" controls width="100%"></video>
+  <a href="docs/recording.mp4">
+    <img src="https://via.placeholder.com/800x450.png?text=Click+to+Watch+Demo+Video" alt="Watch Demo" width="100%">
+  </a>
   <p><em>Watch how PlanAI turns a simple idea into a structured project plan in seconds.</em></p>
 </div>
 
